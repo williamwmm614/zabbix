@@ -1,0 +1,23 @@
+@mixin text-color($color) {
+  color: $color;
+}
+
+@mixin text-truncate() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-truncate-clamp($line: 1) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
+  overflow: hidden;
+}
+
+@mixin text-justify() {
+  width: 6em;
+  display: inline-block;
+  text-align: justify;
+  text-align-last: justify;
+}

@@ -1,0 +1,35 @@
+.page-enter-active,
+.page-leave-active {
+  transition: all .5s;
+}
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+}
+
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+  transition: .3s;
+  transform: translateX(-50px);
+}
+
+/*breadcrumb transition*/
+.breadcrumb-enter-active,
+.breadcrumb-leave-active {
+  transition: all .5s;
+}
+
+.breadcrumb-enter,
+.breadcrumb-leave-active {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.breadcrumb-move {
+  transition: all .5s;
+}
+
+.breadcrumb-leave-active {
+  position: absolute;
+}

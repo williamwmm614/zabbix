@@ -1,0 +1,66 @@
+// Text color
+.text-primary     { @include text-color($brand-primary); }
+.text-info        { @include text-color($brand-info); }
+.text-success     { @include text-color($brand-success); }
+.text-warning     { @include text-color($brand-warning); }
+.text-danger      { @include text-color($brand-danger); }
+.text-black       { @include text-color($black); }
+.text-gray        { @include text-color($gray); }
+.text-gray-light  { @include text-color($gray-light);}
+.text-white       { @include text-color($white); }
+
+// Text size
+@for $size from 12 through 40 {
+  .text-#{$size} {
+    font-size: $size * 1px !important;
+  }
+}
+
+// Text overflow
+.text-truncate {
+  @include text-truncate();
+}
+
+@for $line from 1 through 10 {
+  .text-clamp-#{$line} {
+    @include text-truncate-clamp($line);
+  }
+}
+
+// Responsive alignment
+.text-left   { text-align: left !important; }
+.text-right  { text-align: right !important; }
+.text-center { text-align: center !important; }
+
+// Transformation
+.text-lowercase  { text-transform: lowercase !important; }
+.text-uppercase  { text-transform: uppercase !important; }
+.text-capitalize { text-transform: capitalize !important; }
+
+// Weight and italics
+.font-weight-normal { font-weight: normal !important; }
+.font-weight-bold   { font-weight: bold !important; }
+.font-italic        { font-style: italic !important; }
+
+// Cursor
+.cursor-pointer { cursor: pointer !important; }
+.cursor-default { cursor: default !important; }
+
+// Line height
+.line-height-20 { line-height: 20px !important; }
+.line-height-25 { line-height: 25px !important; }
+.line-height-30 { line-height: 30px !important; }
+.line-height-35 { line-height: 35px !important; }
+.line-height-40 { line-height: 40px !important; }
+.line-height-50 { line-height: 50px !important; }
+
+// White space
+.ws-nowrap    { white-space: nowrap; }
+.ws-pre-wrap  { white-space: pre-wrap; }
+
+// Word break
+.wb-break-all { word-break: break-all; }
+.wb-keep-all  { word-break: keep-all; }
+
+// Underline
+.text-decoration-none      {text-decoration: none !important; }

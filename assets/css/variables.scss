@@ -1,0 +1,197 @@
+// Variables
+//
+// Copy settings from this file into the provided `_custom.scss` to override
+// the Bootstrap defaults without modifying key, versioned files.
+
+
+// Table of Contents
+//
+// Colors
+// Options
+// Spacing
+// Body
+// Links
+// Grid breakpoints
+// Grid containers
+// Grid columns
+// Fonts
+// Components
+// Tables
+// Buttons
+// Forms
+// Dropdowns
+// Z-index master list
+// Navs
+// Navbar
+// Pagination
+// Jumbotron
+// Form states and alerts
+// Cards
+// Tooltips
+// Popovers
+// Badges
+// Modals
+// Alerts
+// Progress bars
+// List group
+// Image thumbnails
+// Figures
+// Breadcrumbs
+// Carousel
+// Close
+// Code
+
+@mixin _assert-ascending($map, $map-name) {
+  $prev-key: null;
+  $prev-num: null;
+  @each $key, $num in $map {
+    @if $prev-num == null {
+      // Do nothing
+    } @else if not comparable($prev-num, $num) {
+      @warn "Potentially invalid value for #{$map-name}: This map must be in ascending order, but key '#{$key}' has value #{$num} whose unit makes it incomparable to #{$prev-num}, the value of the previous key '#{$prev-key}' !";
+    } @else if $prev-num >= $num {
+      @warn "Invalid value for #{$map-name}: This map must be in ascending order, but key '#{$key}' has value #{$num} which isn't greater than #{$prev-num}, the value of the previous key '#{$prev-key}' !";
+    }
+    $prev-key: $key;
+    $prev-num: $num;
+  }
+}
+
+// Replace `$search` with `$replace` in `$string`
+// @author Hugo Giraudel
+// @param {String} $string - Initial string
+// @param {String} $search - Substring to replace
+// @param {String} $replace ('') - New value
+// @return {String} - Updated string
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@mixin _assert-starts-at-zero($map) {
+  $values: map-values($map);
+  $first-value: nth($values, 1);
+  @if $first-value != 0 {
+    @warn "First breakpoint in `$grid-breakpoints` must start at 0, but starts at #{$first-value}.";
+  }
+}
+
+
+// General variable structure
+//
+// Variable format should follow the `$component-modifier-state-property` order.
+
+
+// Colors
+//
+// Grayscale and brand colors for use across Bootstrap.
+
+// Start with assigning color names to specific hex values.
+$white:         #fff !default;
+$black:         #000 !default;
+$red:           #f7627c !default;
+$orange:        #f0ad4e !default;
+$yellow:        #ffcc33 !default;
+$light-yellow:  #fff4e2 !default;
+$green:         #83d688 !default;
+$blue:          #0275d8 !default;
+$light-blue:    #e0edfe !default;
+$teal:          #00cccc !default;
+$pink:          #ff7a8b !default;
+$light-pink:    #ffe6e9 !default;
+$purple:        #9487f1 !default;
+$blue-gray:     #8b9cac !default;
+
+// Create grayscale
+$gray-dark:                 #292b2c !default;
+$gray:                      #464a4c !default;
+$gray-light:                #636c72 !default;
+$gray-lighter:              #eceeef !default;
+$gray-lightest:             #f7f7f9 !default;
+
+// Reassign color vars to semantic color scheme
+$brand-primary:             $blue !default;
+$brand-success:             $green !default;
+$brand-info:                $teal !default;
+$brand-warning:             $orange !default;
+$brand-danger:              $red !default;
+$brand-inverse:             $gray-dark !default;
+
+// Spacing
+//
+// Control the default styling of most Bootstrap elements by modifying these
+// variables. Mostly focused on spacing.
+// You can add more entries to the $spacers map, should you need more variation.
+
+$spacer: 5px !default;
+
+// Body
+//
+// Settings for the `<body>` element.
+
+$body-bg:       $white !default;
+$body-color:    $gray-dark !default;
+
+// box
+$box-colors: (
+  blue: (
+    border: #9CBEFC,
+    background: #C4DCFD,
+    color: #336699
+  ),
+  green: (
+    border: #9FDA25,
+    background: #E4F9CE,
+    color: #006600
+  ),
+  teal: (
+    border: #89CDDC,
+    background: #CAF0F0,
+    color: #20A2A2
+  ),
+  yellow: (
+    border: #FFCC33,
+    background: #FDEFC6,
+    color: #993300
+  ),
+  red: (
+    border: #F7627C,
+    background: #FCCDCE,
+    color: #FF3333
+  ),
+  gray: (
+    border: #797979,
+    background: #CCCCCC,
+    color: #333333
+  ),
+  purple: (
+    border: #AEA4F9,
+    background: #BFC1F0,
+    color: #7732EB
+  )
+) !default;
+
+// Borders
+$border-color:        #dfe3ec;
+
+$border-radius:       .3rem;
+$border-width-sm:     1px;
+$border-width-md:     2px;
+$border-width-lg:     4px;
+$border-width-xl:     6px;
+
+// Sizing
+$per-size:            10px;
+
+// Spacing
+$spacer:              5px;
+
+//sidebar
+$menuBg:#304156;
+$subMenuBg:#1f2d3d;
+$menuHover:#001528;

@@ -1,0 +1,110 @@
+@import "variables";
+@import "mixins";
+
+// @import "../fonts/style.css";
+@import "transition";
+@import "base";
+@import "boxes";
+@import "headline";
+@import "utilities";
+@import "reset";
+
+
+// Override The Third-party
+@import 'element-ui';
+@import "../fonts/iconfont.css";
+
+body{
+  // margin: 0;
+  // padding: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// .title-bg{
+//   position: relative;
+//   width: 100%;
+//   // height: 100%;
+//   height: 48px;
+//   background: url(../images/title-banner2.png) no-repeat;
+//   // background-position-x: 50%;
+//   background-position-y: 50%;
+//   // color: #00B7EE;
+//   color: #1cefec;
+//   font-size: 23px;
+// }
+
+.top-content-section{
+  height: 80%;
+  background-image: linear-gradient(0deg, rgba(0, 247, 233, 0.1) 0%, rgba(0, 247, 233, 0.1) 100%);
+  background-repeat: no-repeat;
+  border-image-source: linear-gradient(0deg, rgba(1, 155, 240, 0.8) 0%, rgba(0, 247, 233, 0.8) 100%);
+  border-image-slice: 1;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.border, .border-top, .border-right, .border-bottom, .border-left {
+  border: none !important;
+}
+
+.global-loading{
+  z-index: 1;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  color: #FFF;
+}
+
+.data-monitoring-wrapper{
+  .dv-percent-pond{
+    width:100%;
+    height:30px;
+
+    text{
+      display: none;
+      // font-size: 15px !important;
+      // font-weight: normal !important;
+      // dominant-baseline: central !important;
+    }
+  }
+}
+
+.text-justify{
+  display: inline-block;
+  width: 6em;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.page-title-section {
+	position: relative;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	background: url(@/assets/images/banner/top-title-bg.png) no-repeat;
+	display: flex;
+	align-items: center;
+
+	.title {
+		font-family: monospace;
+		color: #F3FCFF;
+		font-size: 30px;
+		position: relative;
+		left: 47px;
+	}
+
+	img.title-img {
+		height: 100%;
+		padding-left: 15px;
+	}
+
+	img.back-img {
+		position: absolute;
+		right: 15px;
+		cursor: pointer;
+	}
+}

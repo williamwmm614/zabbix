@@ -1,0 +1,11 @@
+@mixin bg-color($color) {
+  background-color: $color !important;
+}
+
+@mixin orange-row-bg() {
+  background-color: #FAF9DE;
+}
+
+@mixin red-row-bg() {
+  background-color: #FDE6E0;
+}

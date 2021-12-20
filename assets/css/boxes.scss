@@ -1,0 +1,14 @@
+.box {
+  color: $body-color;
+  background-color: $white;
+  border: 1px solid #d7d7d7;
+  border-radius: $border-radius;
+  padding: 5px;
+}
+
+@each $name, $props in $box-colors {
+  .box-#{$name} {
+    @extend .box;
+    @include box-variant(map-get($props, border), map-get($props, background), map-get($props, color));
+  }
+}

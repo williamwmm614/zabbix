@@ -1,0 +1,4 @@
+@for $i from 0 through 100 {
+  .width-#{$i},  .size-#{$i} { width:  $per-size * $i !important; }
+  .height-#{$i}, .size-#{$i} { height: $per-size * $i !important; }
+}

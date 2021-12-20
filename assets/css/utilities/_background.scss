@@ -1,0 +1,8 @@
+// Background color
+.bg-primary       { @include bg-color($brand-primary); }
+.bg-info          { @include bg-color($brand-info); }
+.bg-success       { @include bg-color($brand-success); }
+.bg-warning       { @include bg-color($brand-warning); }
+.bg-danger        { @include bg-color($brand-danger); }
+.bg-black         { @include bg-color($black); }
+.bg-white         { @include bg-color($white); }
