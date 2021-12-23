@@ -11,8 +11,8 @@
 			<div class="top">
 				<!-- 运行状态 -->
 				<vmc-run-state
-					:vmc1Name="vmc1Data.name"
-					:vmc2Name="vmc2Data.name"
+					:vmc1Name="vmc1Data.alias"
+					:vmc2Name="vmc2Data.alias"
 					:vmc1HostList="vmc1Data.hostList"
 					:vmc2HostList="vmc2Data.hostList">
 				</vmc-run-state>
@@ -53,12 +53,14 @@
 				vmc1Data: {
 					id: 0,
 					name: '',
+					alias: '',
 					hostList: [],
 					taskList: []
 				},
 				vmc2Data: {
 					id: 0,
 					name: '',
+					alias: '',
 					hostList: [],
 					taskList: []
 				},
@@ -89,9 +91,11 @@
 				const {vmc1, vmc2} = vmcData
 				this.vmc1Data.id = vmc1.id
 				this.vmc1Data.name = vmc1.name
+				this.vmc1Data.alias = this.$replaceStr(vmc1.name, '计算机')
 				this.vmc1Data.hostList = [vmc1.hostA, vmc1.hostB, vmc1.hostC]
 				this.vmc2Data.id = vmc2.id
 				this.vmc2Data.name = vmc2.name
+				this.vmc2Data.alias = this.$replaceStr(vmc2.name, '计算机')
 				this.vmc2Data.hostList = [vmc2.hostA, vmc2.hostB, vmc2.hostC]
 				this.getVmcPartitionData(this.vmc1Data.id, 'VMC1')
 				this.getVmcPartitionData(this.vmc2Data.id, 'VMC2')

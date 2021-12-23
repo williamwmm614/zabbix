@@ -23,6 +23,10 @@ Vue.prototype.$apis = {
 	hostMerge: '/api/udp/hostMerge'
 }
 
+Vue.prototype.$replaceStr = (str, newStr, oldStr = 'VMC') => {
+	return str.replaceAll(oldStr, newStr)
+};
+
 // 日期格式化
 Vue.prototype.$dateFormat = (date, formatVal = 'YYYY-MM-DD HH:mm:ss') => {
 	if (date) return DayJs(date).format(formatVal);

@@ -58,6 +58,7 @@
 			...mapMutations([
 				'set_cur_vmc_id',
 				'set_cur_host_id',
+				'set_host_activated',
 				'set_interaction_parent_module_name'
 			]),
 
@@ -68,6 +69,7 @@
 				// 点击交互区域将 hostId 和 vmcId清除，便于返回首页后各模块监听并请求数据
 				this.set_cur_vmc_id(0)
 				this.set_cur_host_id(0)
+				this.set_host_activated(0)
 				
 				// 故障分层下级不需要跳转页面
 				if (type === 'GZFC_CHILD') {

@@ -13,20 +13,24 @@
 				<article
 					v-for="(item, index) in rcglImgsData.vmc1HostList"
 					:key="item"
-					@click="handleModuleClick(index + 1)">
+					@click="handleModuleClick(index + 1, item)">
 					<img v-if="activatedModuleIndex === index + 1" :src="rcglImgsData.activeImg" class="active-img">
 					<img v-else :src="rcglImgsData.vmcFaultImg">
-					<div class="name" :class="activatedModuleIndex === index + 1 ? 'name-active' : ''"><span>{{ item }} 故障</span></div>
+					<div class="name" :class="activatedModuleIndex === index + 1 ? 'name-active' : ''">
+						<span>{{ $replaceStr(item, '计算机') }} 故障</span>
+					</div>
 				</article>
 			</div>
 			<div class="row">
 				<article
 					v-for="(item, index) in rcglImgsData.vmc2HostList"
 					:key="item"
-					@click="handleModuleClick(index + 4)">
+					@click="handleModuleClick(index + 4, item)">
 					<img v-if="activatedModuleIndex === index + 4" :src="rcglImgsData.activeImg" class="active-img">
 					<img v-else :src="rcglImgsData.vmcFaultImg">
-					<div class="name" :class="activatedModuleIndex === index + 4 ? 'name-active' : ''"><span>{{ item }} 故障</span></div>
+					<div class="name" :class="activatedModuleIndex === index + 4 ? 'name-active' : ''">
+						<span>{{ $replaceStr(item, '计算机') }} 故障</span>
+					</div>
 				</article>
 			</div>
 		</section>
@@ -58,8 +62,9 @@
 
 		methods: {
 			// 交互体验区模块点击事件
-			handleModuleClick(index) {
+			async handleModuleClick(index, item) {
 				this.activatedModuleIndex = index
+				await this.$axios.get(`${this.$apis.hostMerge}?host=${item}`)
 			},
 			
 			initData() {

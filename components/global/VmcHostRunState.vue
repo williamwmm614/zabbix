@@ -12,7 +12,7 @@
 						:key="host.host">
 						<img v-if="host.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ host.host }}</p>
+						<p>{{ $replaceStr(host.host, '计算机') }}</p>
 					</div>
 				</div>
 			</div>
@@ -30,7 +30,7 @@
 						:key="host.host">
 						<img v-if="host.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ host.host }}</p>
+						<p>{{ $replaceStr(host.host, '计算机') }}</p>
 					</div>
 				</div>
 			</div>

@@ -20,37 +20,37 @@
 					<div class="host">
 						<img v-if="localHostData.vmcData.vmc1.hostA.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ localHostData.vmcData.vmc1.hostA.host }}</p>
+						<p>{{ $replaceStr(localHostData.vmcData.vmc1.hostA.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
 						<img v-if="localHostData.vmcData.vmc1.hostB.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ localHostData.vmcData.vmc1.hostB.host }}</p>
+						<p>{{ $replaceStr(localHostData.vmcData.vmc1.hostB.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
 						<img v-if="localHostData.vmcData.vmc1.hostC.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ localHostData.vmcData.vmc1.hostC.host }}</p>
+						<p>{{ $replaceStr(localHostData.vmcData.vmc1.hostC.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
 						<img v-if="localHostData.vmcData.vmc2.hostA.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ localHostData.vmcData.vmc2.hostA.host }}</p>
+						<p>{{ $replaceStr(localHostData.vmcData.vmc2.hostA.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
 						<img v-if="localHostData.vmcData.vmc2.hostB.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ localHostData.vmcData.vmc2.hostB.host }}</p>
+						<p>{{ $replaceStr(localHostData.vmcData.vmc2.hostB.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
 						<img v-if="localHostData.vmcData.vmc2.hostC.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ localHostData.vmcData.vmc2.hostC.host }}</p>
+						<p>{{ $replaceStr(localHostData.vmcData.vmc2.hostC.host, '计算机') }}</p>
 					</div>
 				</div>
 
