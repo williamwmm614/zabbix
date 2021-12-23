@@ -2,7 +2,8 @@
 	<div class="home-wrapper">
 		<div class="home-container">
 			<section class="page-title-section">
-				<img class="title-img" :src="fsfqTitleImg">
+				<!-- <img class="title-img" :src="fsfqTitleImg"> -->
+				<h3>开放式综合电子演示验证系统地面软件</h3>
 				<span class="cur-time">{{ curTime }}</span>
 			</section>
 
@@ -133,6 +134,18 @@
 			height: 100%;
 			@include flex-space-between;
 			flex-flow: column;
+			
+			.page-title-section{
+				height: 60px !important;
+				line-height: 60px !important;
+				h3{
+					flex: 1;
+					font-size: 30px;
+					color: #f0fafe;
+					text-align: center;
+					font-family: serif;
+				}
+			}
 
 			.main-container {
 				width: 98%;

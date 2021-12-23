@@ -84,21 +84,21 @@
 				</div>
 				
 				<div class="pdu" @click="handleHostClick(9, pduData.pdu1, 'PDU')">
-					<!-- <img v-if="hostActivatedIndex === 9" :src="pduActiveGif"> -->
-					<img :src="pduDoneImgUrl">
+					<img v-if="hostActivatedIndex === 9" :src="pduActiveGif">
+					<img v-else :src="pduDoneImgUrl">
 					<p>RTU-3</p>
 				</div>
 				
 				<div class="pdu" @click="handleHostClick(10, pduData.pdu2, 'PDU')">
-					<!-- <img v-if="hostActivatedIndex === 10" :src="pduActiveGif"> -->
-					<img :src="pduDoneImgUrl">
+					<img v-if="hostActivatedIndex === 10" :src="pduActiveGif">
+					<img v-else :src="pduDoneImgUrl">
 					<p>RTU-4</p>
 				</div>
 			</div>
 		</div>
 
 		<!-- 容错管理、集中并机模块激活时，在拓扑图下面显示 VMC运行状态 -->
-		<vmc-run-state v-if="INTERACTION_PARENT_MODULE_NAME === 'RCGL' || INTERACTION_PARENT_MODULE_NAME === 'JZBJ'"></vmc-run-state>
+		<!-- <vmc-run-state v-if="INTERACTION_PARENT_MODULE_NAME === 'RCGL' || INTERACTION_PARENT_MODULE_NAME === 'JZBJ'"></vmc-run-state> -->
 	</div>
 </template>
 
@@ -241,7 +241,6 @@
 					return
 				}
 				const {data: configData} = await this.$axios.get(`${this.$apis.config}`)
-				console.log(configData)
 				this.$storage.setVmcConfig(configData)
 				this.resetVmcConfigData(configData)
 			},
@@ -260,10 +259,6 @@
 				this.$set(this.pduData.pdu4, 'hostId', +configData['RTU-2'])
 			},
 			
-			replaceStr(str, newStr, oldStr = 'VMC') {
-				return str.replaceAll(oldStr, newStr)
-			},
-			
 			// Set HOST DATA OF VMC AND PDU 
 			initHostData(topologyData) {
 				for (let i = 0; i < 3; i++) {
@@ -272,7 +267,7 @@
 						if (result) {
 							this.$set(this.vmcData.vmc1.hostA, 'ip', result.ip)
 							this.$set(this.vmcData.vmc1.hostA, 'host', result.host)
-							this.$set(this.vmcData.vmc1.hostA, 'alias', this.replaceStr(result.host, '计算机'))
+							this.$set(this.vmcData.vmc1.hostA, 'alias', this.$replaceStr(result.host, '计算机'))
 							this.$set(this.vmcData.vmc1.hostA, 'available', result.available)
 						}
 						
@@ -280,7 +275,7 @@
 						if (result2) {
 							this.$set(this.vmcData.vmc2.hostA, 'ip', result2.ip)
 							this.$set(this.vmcData.vmc2.hostA, 'host', result2.host)
-							this.$set(this.vmcData.vmc2.hostA, 'alias', this.replaceStr(result2.host, '计算机'))
+							this.$set(this.vmcData.vmc2.hostA, 'alias', this.$replaceStr(result2.host, '计算机'))
 							this.$set(this.vmcData.vmc2.hostA, 'available', result2.available)
 						}
 					}
@@ -290,7 +285,7 @@
 						if (result) {
 							this.$set(this.vmcData.vmc1.hostB, 'ip', result.ip)
 							this.$set(this.vmcData.vmc1.hostB, 'host', result.host)
-							this.$set(this.vmcData.vmc1.hostB, 'alias', this.replaceStr(result.host, '计算机'))
+							this.$set(this.vmcData.vmc1.hostB, 'alias', this.$replaceStr(result.host, '计算机'))
 							this.$set(this.vmcData.vmc1.hostB, 'available', result.available)
 						}
 				
@@ -298,7 +293,7 @@
 						if (result2) {
 							this.$set(this.vmcData.vmc2.hostB, 'ip', result2.ip)
 							this.$set(this.vmcData.vmc2.hostB, 'host', result2.host)
-							this.$set(this.vmcData.vmc2.hostB, 'alias', this.replaceStr(result2.host, '计算机'))
+							this.$set(this.vmcData.vmc2.hostB, 'alias', this.$replaceStr(result2.host, '计算机'))
 							this.$set(this.vmcData.vmc2.hostB, 'available', result2.available)
 						}
 					}
@@ -308,7 +303,7 @@
 						if (result) {
 							this.$set(this.vmcData.vmc1.hostC, 'ip', result.ip)
 							this.$set(this.vmcData.vmc1.hostC, 'host', result.host)
-							this.$set(this.vmcData.vmc1.hostC, 'alias', this.replaceStr(result.host, '计算机'))
+							this.$set(this.vmcData.vmc1.hostC, 'alias', this.$replaceStr(result.host, '计算机'))
 							this.$set(this.vmcData.vmc1.hostC, 'available', result.available)
 						}
 				
@@ -316,7 +311,7 @@
 						if (result2) {
 							this.$set(this.vmcData.vmc2.hostC, 'ip', result2.ip)
 							this.$set(this.vmcData.vmc2.hostC, 'host', result2.host)
-							this.$set(this.vmcData.vmc2.hostC, 'alias', this.replaceStr(result2.host, '计算机'))
+							this.$set(this.vmcData.vmc2.hostC, 'alias', this.$replaceStr(result2.host, '计算机'))
 							this.$set(this.vmcData.vmc2.hostC, 'available', result2.available)
 						}
 					}
@@ -591,6 +586,7 @@
 					// width: 15%;
 					text-align: center;
 					cursor: pointer;
+					padding-top: 30px;
 				}
 				
 				.svg-line-tree-wrapper{

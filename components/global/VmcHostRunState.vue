@@ -2,7 +2,7 @@
 	<div class="vmc-host-run-state-wrapper">
 		<div class="container">
 			<div class="vmc-container">
-				<div class="vmc-name">{{ vmc1Name }}</div>
+				<div class="vmc-name"><span>{{ vmc1Name }}</span></div>
 				
 				<div class="host-wrapper">
 					<div
@@ -12,7 +12,7 @@
 						:key="host.host">
 						<img v-if="host.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ host.host }}</p>
+						<p>{{ $replaceStr(host.host, '计算机') }}</p>
 					</div>
 				</div>
 			</div>
@@ -20,7 +20,7 @@
 		
 		<div class="container">
 			<div class="vmc-container">
-				<div class="vmc-name">{{ vmc2Name }}</div>
+				<div class="vmc-name"><span>{{ vmc2Name }}</span></div>
 						
 				<div class="host-wrapper">
 					<div
@@ -30,7 +30,7 @@
 						:key="host.host">
 						<img v-if="host.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg">
-						<p>{{ host.host }}</p>
+						<p>{{ $replaceStr(host.host, '计算机') }}</p>
 					</div>
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-	import {mapMutations, mapGetters} from 'vuex'
+	import {mapMutations} from 'vuex'
 	export default {
 		name: 'VmcHostRunState',
 
@@ -181,12 +181,14 @@
 			.vmc-name {
 				width: 85px;
 				height: 40px;
+				line-height: 45px;
+				text-align: center;
 				background: url('@/assets/images/hostState/title-bg.png') no-repeat;
 				background-size: 100% 100%;
 				color: #DFEEF3;
 				font-size: 16px;
 				font-weight: bold;
-				@include flex-level-center;
+				// @include flex-level-center;
 			}
 
 			.host-wrapper {
@@ -200,6 +202,10 @@
 						color: $main-text-color;
 						font-weight: bold;
 						font-size: 15px;
+					}
+					
+					img{
+						width: 5.625rem;
 					}
 					
 					&-activated {

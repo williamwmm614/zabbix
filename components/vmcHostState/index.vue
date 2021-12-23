@@ -11,8 +11,8 @@
 			<div class="top">
 				<!-- 运行状态 -->
 				<vmc-run-state
-					:vmc1Name="vmc1Data.name"
-					:vmc2Name="vmc2Data.name"
+					:vmc1Name="vmc1Data.alias"
+					:vmc2Name="vmc2Data.alias"
 					:vmc1HostList="vmc1Data.hostList"
 					:vmc2HostList="vmc2Data.hostList">
 				</vmc-run-state>
@@ -35,6 +35,7 @@
 	// 交互体验区vmc主机运行状态
 	import VmcRunState from '../global/VmcHostRunState.vue'
 	import Task from '../global/Task.vue'
+	import {mapGetters} from 'vuex'
 
 	export default {
 		name: 'index',
@@ -52,16 +53,29 @@
 				vmc1Data: {
 					id: 0,
 					name: '',
+					alias: '',
 					hostList: [],
 					taskList: []
 				},
 				vmc2Data: {
 					id: 0,
 					name: '',
+					alias: '',
 					hostList: [],
 					taskList: []
 				},
 				showSection: false
+			}
+		},
+		
+		computed: {
+			...mapGetters(['CUR_HOST_ID'])
+		},
+		
+		watch: {
+			CUR_HOST_ID(val) {
+				this.getVmcPartitionData(this.vmc1Data.id, 'VMC1')
+				this.getVmcPartitionData(this.vmc2Data.id, 'VMC2')
 			}
 		},
 
@@ -77,9 +91,11 @@
 				const {vmc1, vmc2} = vmcData
 				this.vmc1Data.id = vmc1.id
 				this.vmc1Data.name = vmc1.name
+				this.vmc1Data.alias = this.$replaceStr(vmc1.name, '计算机')
 				this.vmc1Data.hostList = [vmc1.hostA, vmc1.hostB, vmc1.hostC]
 				this.vmc2Data.id = vmc2.id
 				this.vmc2Data.name = vmc2.name
+				this.vmc2Data.alias = this.$replaceStr(vmc2.name, '计算机')
 				this.vmc2Data.hostList = [vmc2.hostA, vmc2.hostB, vmc2.hostC]
 				this.getVmcPartitionData(this.vmc1Data.id, 'VMC1')
 				this.getVmcPartitionData(this.vmc2Data.id, 'VMC2')
@@ -88,6 +104,8 @@
 			
 			// 获取VMC分区任务数据
 			async getVmcPartitionData(vmcId, type) {
+				this.vmc1Data.taskList = []
+				this.vmc2Data.taskList = []
 				let {
 					data: partitionData
 				} = await this.$axios.get(`${this.$apis.vmc}/${vmcId}`)
@@ -111,7 +129,8 @@
 		.title {
 			display: flex;
 			align-items: center;
-			height: 35px;
+			// height: 35px;
+			height: 30px;
 
 			.container {
 				height: 100%;

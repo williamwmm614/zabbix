@@ -59,10 +59,10 @@ module.exports = {
     '@/plugins/vue-inject',
     '@/plugins/element-ui',
     '@/plugins/echarts',
-    '@/plugins/antv-g6',
+    // '@/plugins/antv-g6',
     '@/plugins/axios',
     '@/plugins/lang',
-    '@/plugins/components',
+    // '@/plugins/components',
     {src: '@/plugins/dataView', ssr: false},
     {src: '@/plugins/nprogress', ssr: false},
   ],
@@ -71,7 +71,7 @@ module.exports = {
   ** See https://nuxtjs.org/api/configuration-components
   */
   components: true,
-  /*
+  /*false
   ** Nuxt.js dev-modules
   */
   buildModules: [
@@ -83,7 +83,7 @@ module.exports = {
   */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
+    // '@nuxtjs/axios',
     '@nuxtjs/style-resources' // 添加对应的CSS加载模块
   ],
   /*
@@ -91,7 +91,7 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    proxy: true
+    proxy: false
   },
 
   /*

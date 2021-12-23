@@ -221,13 +221,13 @@
 		}
 	}
 	
-	/deep/.topology-page-wrapper {
-		.topology-page-container{
-			.pdu-row {
-				.pdu {
-					padding-top: 30px;
-				}
-			}
-		}
-	}
+	// /deep/.topology-page-wrapper {
+	// 	.topology-page-container{
+	// 		.pdu-row {
+	// 			.pdu {
+	// 				padding-top: 30px;
+	// 			}
+	// 		}
+	// 	}
+	// }
 </style>

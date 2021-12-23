@@ -109,14 +109,19 @@
 			...mapMutations(['set_interaction_parent_module_name']),
 
 			// 交互体验区模块点击事件
-			handleModuleClick(index, type) {
+			async handleModuleClick(index, type) {
 				const _this = this
 				this.activatedModuleIndex = index
+				
 				// 故障分层下级不需要跳转页面
 				if (type === 'GZFC_CHILD') {
 					this.set_interaction_parent_module_name(type)
+					await this.$axios.get(this.$apis.xcjGzmn)
 					return
 				}
+				
+				if (index === 2) await this.$axios.get(this.$apis.fqjGzmn)
+				if (index === 3) await this.$axios.get(this.$apis.computerGzmn)
 			}
 		}
 	}

@@ -14,20 +14,24 @@
 					<article
 						v-for="(item, index) in rcglImgsData.vmc1HostList"
 						:key="item"
-						@click="handleModuleClick(index + 1)">
+						@click="handleModuleClick(index + 1, item)">
 						<img v-if="activatedModuleIndex === index + 1" :src="rcglImgsData.hostActiveImg" class="active-img">
 						<img v-else :src="rcglImgsData.vmcFaultImg">
-						<div class="name" :class="activatedModuleIndex === index + 1 ? 'name-active' : ''"><span>{{ item }} 故障</span></div>
+						<div class="name" :class="activatedModuleIndex === index + 1 ? 'name-active' : ''">
+							<span>{{ $replaceStr(item, '计算机') }} 故障</span>
+						</div>
 					</article>
 				</div>
 				<div class="row">
 					<article
 						v-for="(item, index) in rcglImgsData.vmc2HostList"
 						:key="item"
-						@click="handleModuleClick(index + 4)">
+						@click="handleModuleClick(index + 4, item)">
 						<img v-if="activatedModuleIndex === index + 4" :src="rcglImgsData.hostActiveImg" class="active-img">
 						<img v-else :src="rcglImgsData.vmcFaultImg">
-						<div class="name" :class="activatedModuleIndex === index + 4 ? 'name-active' : ''"><span>{{ item }} 故障</span></div>
+						<div class="name" :class="activatedModuleIndex === index + 4 ? 'name-active' : ''">
+							<span>{{ $replaceStr(item, '计算机') }} 故障</span>
+						</div>
 					</article>
 				</div>
 			</div>
@@ -37,7 +41,7 @@
 					<article
 						v-for="(item, index) in rcglImgsData.rtuHostList"
 						:key="item"
-						@click="handleModuleClick(index + 7)">
+						@click="handleModuleClick(index + 7, item)">
 						
 						<img v-if="activatedModuleIndex === index + 7" :src="rcglImgsData.pduActiveImg" class="active-img">
 						<img v-else :src="pduImgUrl">
@@ -49,7 +53,7 @@
 					<article
 						v-for="(item, index) in rcglImgsData.rtuHostList2"
 						:key="item"
-						@click="handleModuleClick(index + 9)">
+						@click="handleModuleClick(index + 9, item)">
 						
 						<img v-if="activatedModuleIndex === index + 9" :src="rcglImgsData.pduActiveImg" class="active-img">
 						<img v-else :src="pduImgUrl">
@@ -90,8 +94,11 @@
 
 		methods: {
 			// 交互体验区模块点击事件
-			handleModuleClick(index) {
+			async handleModuleClick(index, item) {
 				this.activatedModuleIndex = index
+				if (item === 'RTU-3') item = 'RTU-1'
+				if (item === 'RTU-4') item = 'RTU-2'
+				await this.$axios.get(`${this.$apis.hostMerge}?host=${item}`)
 			},
 			
 			initData() {
