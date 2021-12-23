@@ -87,6 +87,7 @@
 					font-size: 15px;
 					font-weight: bolder;
 					@include flex-level-center;
+					transition: 1s ease-in-out;
 
 					&-blue {
 						background: url(@/assets/images/task/blue.png) no-repeat;

@@ -114,7 +114,6 @@
 			
 			// 定时获取VMC数据，不根据主机轮询获取，5S获取一次
 			repeatGetVmcData(vmcId) {
-				console.log(vmcId)
 				const _this = this
 				setInterval(() => {
 					_this.getVmcPartitionData(vmcId)
@@ -131,8 +130,10 @@
 				this.vmcTaskList = this.partitionData.partitions
 				
 				const {partitionCount, taskCount} = partitionData 
-				this.set_vmc_task_count(taskCount)
-				this.set_vmc_partition_count(partitionCount)
+				// this.set_vmc_task_count(taskCount)
+				// this.set_vmc_partition_count(partitionCount)
+				// this.$storage.setVmcPartition(partitionCount)
+				// this.$storage.setVmcTask(taskCount)
 				this.showTaskList = true
 			},
 	

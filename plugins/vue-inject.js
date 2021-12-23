@@ -24,7 +24,9 @@ Vue.prototype.$apis = {
 }
 
 Vue.prototype.$replaceStr = (str, newStr, oldStr = 'VMC') => {
-	return str.replaceAll(oldStr, newStr)
+	if (str) {
+		return str.replaceAll(oldStr, newStr)
+	}
 };
 
 // 日期格式化

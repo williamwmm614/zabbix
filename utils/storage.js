@@ -3,6 +3,8 @@ const hostInfoKey = 'HOST_DATA'
 const configKey = 'VMC_CONFIG'
 const dataKey = 'VMC_PDU_DATA'
 const curHostIdKey = 'CUR_HOST_ID'
+const vmcPartitionKey = 'VMC_PARTITION_AMOUNT'
+const vmcTaskKey = 'VMC_TASK_AMOUNT'
 
 export default {
 	// 清除全部缓存数据
@@ -26,5 +28,10 @@ export default {
 	// 存储当前已激活的主机ID，供其他页面使用
 	setCurHostData: id => _storage.set(curHostIdKey, id),
 	getCurHostData: _ => _storage.get(curHostIdKey),
-	removeCurHostId: _ => _storage.remove(curHostIdKey)
+	removeCurHostId: _ => _storage.remove(curHostIdKey),
+	
+	setVmcPartition: data => _storage.set(vmcPartitionKey, data),
+	getVmcPartition: data => _storage.get(vmcPartitionKey),
+	setVmcTask: data => _storage.set(vmcTaskKey, data),
+	getVmcTask: data => _storage.get(vmcTaskKey),
 }
