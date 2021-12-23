@@ -84,21 +84,21 @@
 				</div>
 				
 				<div class="pdu" @click="handleHostClick(9, pduData.pdu1, 'PDU')">
-					<!-- <img v-if="hostActivatedIndex === 9" :src="pduActiveGif"> -->
-					<img :src="pduDoneImgUrl">
+					<img v-if="hostActivatedIndex === 9" :src="pduActiveGif">
+					<img v-else :src="pduDoneImgUrl">
 					<p>RTU-3</p>
 				</div>
 				
 				<div class="pdu" @click="handleHostClick(10, pduData.pdu2, 'PDU')">
-					<!-- <img v-if="hostActivatedIndex === 10" :src="pduActiveGif"> -->
-					<img :src="pduDoneImgUrl">
+					<img v-if="hostActivatedIndex === 10" :src="pduActiveGif">
+					<img v-else :src="pduDoneImgUrl">
 					<p>RTU-4</p>
 				</div>
 			</div>
 		</div>
 
 		<!-- 容错管理、集中并机模块激活时，在拓扑图下面显示 VMC运行状态 -->
-		<vmc-run-state v-if="INTERACTION_PARENT_MODULE_NAME === 'RCGL' || INTERACTION_PARENT_MODULE_NAME === 'JZBJ'"></vmc-run-state>
+		<!-- <vmc-run-state v-if="INTERACTION_PARENT_MODULE_NAME === 'RCGL' || INTERACTION_PARENT_MODULE_NAME === 'JZBJ'"></vmc-run-state> -->
 	</div>
 </template>
 
@@ -591,6 +591,7 @@
 					// width: 15%;
 					text-align: center;
 					cursor: pointer;
+					padding-top: 30px;
 				}
 				
 				.svg-line-tree-wrapper{

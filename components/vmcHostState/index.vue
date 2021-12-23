@@ -35,6 +35,7 @@
 	// 交互体验区vmc主机运行状态
 	import VmcRunState from '../global/VmcHostRunState.vue'
 	import Task from '../global/Task.vue'
+	import {mapGetters} from 'vuex'
 
 	export default {
 		name: 'index',
@@ -64,6 +65,17 @@
 				showSection: false
 			}
 		},
+		
+		computed: {
+			...mapGetters(['CUR_HOST_ID'])
+		},
+		
+		watch: {
+			CUR_HOST_ID(val) {
+				this.getVmcPartitionData(this.vmc1Data.id, 'VMC1')
+				this.getVmcPartitionData(this.vmc2Data.id, 'VMC2')
+			}
+		},
 
 		mounted() {
 			this.initData()
@@ -88,6 +100,8 @@
 			
 			// 获取VMC分区任务数据
 			async getVmcPartitionData(vmcId, type) {
+				this.vmc1Data.taskList = []
+				this.vmc2Data.taskList = []
 				let {
 					data: partitionData
 				} = await this.$axios.get(`${this.$apis.vmc}/${vmcId}`)
@@ -111,7 +125,8 @@
 		.title {
 			display: flex;
 			align-items: center;
-			height: 35px;
+			// height: 35px;
+			height: 30px;
 
 			.container {
 				height: 100%;
