@@ -80,7 +80,7 @@
 		data() {
 			return {
 				titleIcon: require('@/assets/images/title/title-icon.png'),
-				activatedModuleIndex: 1,
+				activatedModuleIndex: 0,
 				// 故障分层图片
 				gzfcImgs: {
 					xcjImg: require('@/assets/images/interactiveExperience/gzfc/thread-default.png'),
@@ -114,12 +114,12 @@
 				this.activatedModuleIndex = index
 				
 				// 故障分层下级不需要跳转页面
-				if (type === 'GZFC_CHILD') {
-					this.set_interaction_parent_module_name(type)
-					await this.$axios.get(this.$apis.xcjGzmn)
-					return
-				}
-				
+				// if (type === 'GZFC_CHILD') {
+				// 	this.set_interaction_parent_module_name(type)
+				// 	await this.$axios.get(this.$apis.xcjGzmn)
+				// 	return
+				// }
+				if (index === 1) await this.$axios.get(this.$apis.xcjGzmn) 
 				if (index === 2) await this.$axios.get(this.$apis.fqjGzmn)
 				if (index === 3) await this.$axios.get(this.$apis.computerGzmn)
 			}

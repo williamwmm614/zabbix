@@ -235,11 +235,11 @@
 			]),
 
 			async getVmcConfigData() {
-				const localVmcConfigData = this.$storage.getVmcConfig()
-				if (localVmcConfigData) {
-					this.resetVmcConfigData(localVmcConfigData)
-					return
-				}
+				// const localVmcConfigData = this.$storage.getVmcConfig()
+				// if (localVmcConfigData) {
+				// 	this.resetVmcConfigData(localVmcConfigData)
+				// 	return
+				// }
 				const {data: configData} = await this.$axios.get(`${this.$apis.config}`)
 				this.$storage.setVmcConfig(configData)
 				this.resetVmcConfigData(configData)

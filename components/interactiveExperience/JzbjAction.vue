@@ -52,12 +52,11 @@
 				<div class="row">
 					<article
 						v-for="(item, index) in rcglImgsData.rtuHostList2"
-						:key="item"
-						@click="handleModuleClick(index + 9, item)">
+						:key="item">
 						
-						<img v-if="activatedModuleIndex === index + 9" :src="rcglImgsData.pduActiveImg" class="active-img">
-						<img v-else :src="pduImgUrl">
-						<div class="name" :class="activatedModuleIndex === index + 9 ? 'name-active' : ''"><span>{{ item }} 故障</span></div>
+						<!-- <img v-if="activatedModuleIndex === index + 9" :src="rcglImgsData.pduActiveImg" class="active-img"> -->
+						<img :src="rcglImgsData.pduDoneImgUrl">
+						<div class="name"><span>{{ item }} 故障</span></div>
 					</article>
 				</div>
 			</div>
@@ -80,6 +79,7 @@
 					vmcWarningImg: require('@/assets/images/interactiveExperience/rcgl/vmc-warning.png'),
 					hostActiveImg: require('@/assets/images/interactiveExperience/activeImgs/rcgl/host.png'),
 					pduActiveImg: require('@/assets/images/interactiveExperience/activeImgs/rcgl/pdu.png'),
+					pduDoneImgUrl: require('@/assets/images/topology/pdu-done.png'),
 					vmc1HostList: [],
 					vmc2HostList: [],
 					rtuHostList: [],
@@ -96,9 +96,7 @@
 			// 交互体验区模块点击事件
 			async handleModuleClick(index, item) {
 				this.activatedModuleIndex = index
-				if (item === 'RTU-3') item = 'RTU-1'
-				if (item === 'RTU-4') item = 'RTU-2'
-				await this.$axios.get(`${this.$apis.hostMerge}?host=${item}`)
+				if (item) await this.$axios.get(`${this.$apis.hostMerge}?host=${item}`)
 			},
 			
 			initData() {

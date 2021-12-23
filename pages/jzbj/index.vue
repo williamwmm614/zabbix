@@ -69,12 +69,14 @@
 		methods: {
 			...mapMutations([
 				'set_cur_vmc_id',
-				'set_cur_host_id'
+				'set_cur_host_id',
+				'set_host_activated'
 			]),
 
 			handleBack() {
 				this.set_cur_vmc_id(0)
 				this.set_cur_host_id(0)
+				this.set_host_activated(0)
 				this.$router.go(-1)
 			}
 		}

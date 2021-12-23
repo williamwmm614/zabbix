@@ -153,6 +153,7 @@
 
 <script>
 	import Chart from '@/components/detail/Chart.vue'
+	import {mapMutations} from 'vuex'
 	export default {
 		name: 'detail',
 
@@ -296,7 +297,10 @@
 		},
 
 		methods: {
+			...mapMutations(['set_host_activated']),
+			
 			handleBack() {
+				this.set_host_activated(0)
 				this.$router.go(-1)
 			},
 

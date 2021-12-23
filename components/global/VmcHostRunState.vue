@@ -87,7 +87,8 @@
 
 		methods: {
 			...mapMutations([
-				'set_cur_host_id'
+				'set_cur_host_id',
+				'set_host_activated'
 			]),
 			
 			// 存储轮询主机ID
@@ -101,11 +102,10 @@
 					3: vmc1.hostC.hostId,
 					4: vmc2.hostA.hostId,
 					5: vmc2.hostB.hostId,
-					6: vmc2.hostC.hostId,
-					7: pdu1.hostId,
-					8: pdu2.hostId
+					6: vmc2.hostC.hostId
 				}
 				
+				this.set_host_activated(hostIndex)
 				this.set_cur_host_id(hostIdJson[hostIndex])
 			},
 			

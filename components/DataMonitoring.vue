@@ -23,14 +23,14 @@
 					<img :src="memoryIcon">
 					<div class="info">
 						<label>分区数：</label>
-						<span class="value">{{ VMC_PARTITON_COUNT }}</span>
+						<span class="value">{{ vmcPartitionCount }}</span>
 					</div>
 				</div>
 				<div class="data-row">
 					<img :src="taskIcon">
 					<div class="info">
 						<label>任务数：</label>
-						<span class="value">{{ VMC_TASK_COUNT }}</span>
+						<span class="value">{{ vmcTaskCount }}</span>
 					</div>
 				</div>
 			</div>
@@ -134,6 +134,8 @@
 				partitionIcon: require('@/assets/images/dataMonitor/partition.png'),
 				taskIcon: require('@/assets/images/dataMonitor/task.png'),
 				lineImg: require('@/assets/images/task/line.png'),
+				vmcPartitionCount: 0,
+				vmcTaskCount: 0,
 
 				// VMC进度条信息
 				vmcCpuConfig: {
@@ -216,8 +218,7 @@
 		computed: {
 			...mapGetters([
 				'CUR_HOST_ID',
-				'VMC_TASK_COUNT',
-				'VMC_PARTITON_COUNT',
+				'HOST_ACTIVATED',
 				'INTERACTION_PARENT_MODULE_NAME',
 			])
 		},
@@ -229,6 +230,12 @@
 					this.getHostInfo()
 					this.getAllHostData()
 				}
+			},
+			
+			HOST_ACTIVATED(val) {
+				if (val === 0) return
+				if (val >= 1 && val <= 3) this.getVmcPartitionData(241)
+				if (val > 3 && val <= 6) this.getVmcPartitionData(242)
 			}
 		},
 		
@@ -243,6 +250,15 @@
 
 		methods: {
 			...mapMutations(['set_cur_vmc_id', 'set_cur_host_id']),
+			
+			async getVmcPartitionData(vmcId) {
+				let {
+					data: partitionData
+				} = await this.$axios.get(`${this.$apis.vmc}/${vmcId}`)
+				const {partitionCount, taskCount} = partitionData 
+				this.vmcPartitionCount = partitionCount
+				this.vmcTaskCount = taskCount
+			},
 			
 			// 查看详情
 			handleViewDetail() {
