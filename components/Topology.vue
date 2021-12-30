@@ -98,7 +98,7 @@
 		</div>
 
 		<!-- 容错管理、集中并机模块激活时，在拓扑图下面显示 VMC运行状态 -->
-		<!-- <vmc-run-state v-if="INTERACTION_PARENT_MODULE_NAME === 'RCGL' || INTERACTION_PARENT_MODULE_NAME === 'JZBJ'"></vmc-run-state> -->
+		<vmc-run-state v-if="INTERACTION_PARENT_MODULE_NAME === 'RCGL' || INTERACTION_PARENT_MODULE_NAME === 'JZBJ'"></vmc-run-state>
 	</div>
 </template>
 

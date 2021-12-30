@@ -25,7 +25,6 @@
 
 			<!-- VMC 任务列表 -->
 			<task v-if="showVmcTaskListComponent && showTaskList" :taskList="vmcTaskList"></task>
-
 			<!-- PDU 任务列表 -->
 			<pdu-task v-if="showPduTaskListComponent && showPduTaskList" :taskList="pduTaskList"></pdu-task>
 		</div>
@@ -84,20 +83,23 @@
 			},
 			
 			HOST_ACTIVATED(index) {
+				console.log(`当前主机下标：${index}`);
+				this.clearVmcInterval()
 				this.showVmcTaskListComponent = false
 				this.showPduTaskListComponent = false
 				if (index >= 7 && index <= 10) {
-					// this.clearVmcInterval()
 					this.showPduTaskListComponent = true
 				} else {
-					this.getVmcPartitionData(this.CUR_VMC_ID)
 					this.showVmcTaskListComponent = true
-					// this.repeatGetVmcData(this.CUR_VMC_ID)
+					setTimeout(() => {
+						this.repeatGetVmcData(this.CUR_VMC_ID)
+					}, 1000)
 				}
 			}
 		},
 
 		mounted() {
+			this.getVmcPartitionData(241)
 			this.getPduPartitionData()
 		},
 
@@ -112,12 +114,15 @@
 				this.vmcTimer = null
 			},
 			
-			// 定时获取VMC数据，不根据主机轮询获取，5S获取一次
+			// 定时获取VMC数据，不根据主机轮询获取，1S获取一次
 			repeatGetVmcData(vmcId) {
 				const _this = this
-				setInterval(() => {
+				this.vmcTimer = setInterval(() => {
 					_this.getVmcPartitionData(vmcId)
-				}, 3 * 1000)
+				}, 1000)
+				this.$once('hook:beforeDestroy', () => {
+					_this.clearVmcInterval()
+				})
 			},
 			
 			// 获取 VMC 任务栈数据
@@ -132,8 +137,8 @@
 				const {partitionCount, taskCount} = partitionData 
 				// this.set_vmc_task_count(taskCount)
 				// this.set_vmc_partition_count(partitionCount)
-				// this.$storage.setVmcPartition(partitionCount)
-				// this.$storage.setVmcTask(taskCount)
+				this.$storage.setVmcPartition(partitionCount)
+				this.$storage.setVmcTask(taskCount)
 				this.showTaskList = true
 			},
 	

@@ -23,14 +23,14 @@ module.exports = {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    title: '监控平台',
+    title: '开放式综合电子演示验证系统地面软件',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/client.ico' }
+      // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
   /*
