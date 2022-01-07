@@ -252,10 +252,6 @@
 
 			// 获取拓扑图数据
 			async getTopologyData() {
-				// const {
-				// 	data: topologyData
-				// } = await this.$axios.get(`${this.$apis.topology}`)
-				// this.initHostData(topologyData)
 				// 触发主机轮询
 				this.repeatHost()
 			},
@@ -276,19 +272,6 @@
 				this.hostActivatedIndex = hostIndex
 				this.set_host_activated(hostIndex) // 存储当前激活的主机下标
 				this.setHostIdVuex(hostIndex)
-				
-				// if (type === 'HOST') {
-				// 	// 存储 VMC 的ID
-				// 	let vmcId = 0
-				// 	if (this.hostActivatedIndex <= 3) {
-				// 		vmcId = this.vmcData.vmc1.id
-				// 	} else {
-				// 		if (this.hostActivatedIndex < 9 ) {
-				// 			vmcId = this.vmcData.vmc2.id
-				// 		}
-				// 	}
-				// 	this.set_cur_vmc_id(vmcId)
-				// }
 				
 				// 点击主机后停掉所有主机轮巡
 				this.clearHostClickCountInterval()
