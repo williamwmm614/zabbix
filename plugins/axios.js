@@ -14,8 +14,8 @@ export default ({ redirect }) => {
        * @type {string}
        */
       let reqUrls = {
-        development: 'http://58.210.169.168:8086', // http://58.210.169.168:8086 http://172.16.0.162:8080
-        test: 'http://58.210.169.168:8086',
+        development: 'http://172.16.0.162:8080', // http://58.210.169.168:8086 http://172.16.0.162:8080
+        test: 'http://172.16.0.162:8080',
         production: 'http://192.168.1.15:8080'
       };
       config.baseURL = reqUrls[process.env.environment];
