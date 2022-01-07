@@ -18,7 +18,7 @@
 						<img v-if="activatedModuleIndex === index + 1" :src="rcglImgsData.hostActiveImg" class="active-img">
 						<img v-else :src="rcglImgsData.vmcFaultImg">
 						<div class="name" :class="activatedModuleIndex === index + 1 ? 'name-active' : ''">
-							<span>{{ $replaceStr(item.host, '计算机') }} 故障</span>
+							<span>{{ item.host }} 故障</span>
 						</div>
 					</article>
 				</div>
@@ -30,7 +30,7 @@
 						<img v-if="activatedModuleIndex === index + 4" :src="rcglImgsData.hostActiveImg" class="active-img">
 						<img v-else :src="rcglImgsData.vmcFaultImg">
 						<div class="name" :class="activatedModuleIndex === index + 4 ? 'name-active' : ''">
-							<span>{{ $replaceStr(item.host, '计算机') }} 故障</span>
+							<span>{{ item.host }} 故障</span>
 						</div>
 					</article>
 				</div>

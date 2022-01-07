@@ -146,15 +146,15 @@
 						name: 'VMC1',
 						hostA: {
 							hostId: 16,
-							host: 'CPU'
+							host: 'VMC1-A'
 						},
 						hostB: {
 							hostId: 17,
-							host: 'DSP'
+							host: 'VMC1-B'
 						},
 						hostC: {
 							hostId: 18,
-							host: 'GPU'
+							host: 'VMC1-C'
 						}
 					},
 
@@ -162,15 +162,15 @@
 						name: 'VMC2',
 						hostA: {
 							hostId: 32,
-							host: 'CPU'
+							host: 'VMC2-A'
 						},
 						hostB: {
 							hostId: 33,
-							host: 'DSP'
+							host: 'VMC2-B'
 						},
 						hostC: {
 							hostId: 34,
-							host: 'GPU'
+							host: 'VMC2-C'
 						}
 					},
 				},
