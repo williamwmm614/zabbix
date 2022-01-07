@@ -191,25 +191,44 @@
 		},
 
 		computed: {
-			...mapGetters(['HOST_ACTIVATED', 'INTERACTION_PARENT_MODULE_NAME'])
+			...mapGetters([
+				'CUR_HOST_ID',
+				'HOST_ACTIVATED',
+				'INTERACTION_PARENT_MODULE_NAME'
+			])
 		},
 
 		watch: {
 			HOST_ACTIVATED(val) {
-				if (this.INTERACTION_PARENT_MODULE_NAME === 'RCGL' || this.INTERACTION_PARENT_MODULE_NAME === 'JZBJ') {
-					const {
-						vmc1,
-						vmc2
-					} = this.localVmcData
-					if (val <= 3) this.vmcId = vmc1.id
-					if (val > 3 && val <= 6) this.vmcId = vmc2.id
-					this.getTrackData()
+				// if (this.INTERACTION_PARENT_MODULE_NAME === 'RCGL' || this.INTERACTION_PARENT_MODULE_NAME === 'JZBJ') {
+				// 	const {
+				// 		vmc1,
+				// 		vmc2
+				// 	} = this.localVmcData
+				// 	if (val <= 3) this.vmcId = vmc1.id
+				// 	if (val > 3 && val <= 6) this.vmcId = vmc2.id
+				// 	this.getTrackData()
+				// }
+			},
+			
+			CUR_HOST_ID: {
+				immediate: true,
+				handler(id) {
+					// console.log(id);
+					if (id !== 0 && id !== 48 && id !== 49) {
+						setTimeout(() => {
+							if (this.INTERACTION_PARENT_MODULE_NAME === 'RCGL' || this.INTERACTION_PARENT_MODULE_NAME === 'JZBJ') {
+								console.log(id);
+								this.getTrackData(id)
+							}
+						}, 500)
+					}
 				}
 			}
 		},
 
 		mounted() {
-			this.initData()
+			// this.initData()
 		},
 
 		methods: {
@@ -241,7 +260,8 @@
 			},
 
 			// 获取轨道图数据
-			async getTrackData() {
+			async getTrackData(id) {
+				console.log(id);
 				this.getCurTime()
 				this.chartOption.series = [{
 						name: 'X坐标',
@@ -265,16 +285,22 @@
 
 				let {
 					data: trackData
-				} = await this.$axios.get(`${this.$apis.track}?id=${this.vmcId}`)
-
-				let timestamps = trackData[0].xyzs.map(e => this.$dateFormat(e.timestamp).split(' ')[1])
-				let xs = trackData[0].xyzs.map(e => e.x)
-				let ys = trackData[0].xyzs.map(e => e.y)
-				let zs = trackData[0].xyzs.map(e => e.z)
+				} = await this.$axios.get(`${this.$apis.vmc}/${id}`)
+				
+				console.log(trackData);
+				const {x, y, z, timestamp} = trackData
+				// let timestamps = trackData[0].xyzs.map(e => this.$dateFormat(e.timestamp).split(' ')[1])
+				// let xs = trackData[0].xyzs.map(e => e.x)
+				// let ys = trackData[0].xyzs.map(e => e.y)
+				// let zs = trackData[0].xyzs.map(e => e.z)
+				let xs = [100, 200, 300]
+				let ys = [400, 500, 600]
+				let zs = [1234, 4321, 456]
+				let timestampNew = [this.$dateFormat(timestamp).split(' ')[1]]
 				this.setYAxisMinMax(xs, ys, zs)
 
 				// 如果最新一条数据时间和当前时间差超过30秒，则最后一条数据点闪烁
-				const diffVal = this.curTime - trackData[0].xyzs[trackData[0].xyzs.length - 1].timestamp
+				const diffVal = this.curTime - timestamp
 				if (diffVal > (30 * 1000)) {
 					const symbolSize = 10
 					let xLastData = xs[xs.length - 1]
@@ -296,14 +322,14 @@
 					}
 				}
 
-				this.chartOption.xAxis.data = timestamps
+				this.chartOption.xAxis.data = timestampNew
 				this.chartOption.series[0].data = xs
 				this.chartOption.series[1].data = ys
 				this.chartOption.series[2].data = zs
 				this.effectScatterArr[0].data = xs
 				this.effectScatterArr[1].data = ys
 				this.effectScatterArr[2].data = zs
-				this.chartOption.series = this.chartOption.series.concat(this.effectScatterArr)
+				// this.chartOption.series = this.chartOption.series.concat(this.effectScatterArr)
 
 				this.initCharts()
 			},

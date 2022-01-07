@@ -25,11 +25,9 @@
     "element-ui": "^2.13.2",
     "express": "^4.17.1",
     "good-storage": "^1.1.1",
-    "node-sass": "^4.14.1",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "nuxt": "^2.14.0",
-    "sass-loader": "^7.1.0",
     "vue-i18n": "^8.21.1",
     "vue-infinite-scroll": "^2.0.2",
     "vue-quill-editor": "^3.0.6"
@@ -41,7 +39,9 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^7.5.0",
     "eslint-plugin-nuxt": "^1.0.0",
+    "node-sass": "^6.0.1",
     "nodemon": "^2.0.4",
+    "sass-loader": "^10.2.0",
     "stylus": "^0.54.8",
     "stylus-loader": "^4.1.1"
   }

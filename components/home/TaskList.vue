@@ -52,7 +52,6 @@
 				lineImg: require('@/assets/images/task/line.png'),
 				showTaskList: false,
 				vmcTaskList: [],
-				pduTaskList: [],
 				partitionData: {},
 				
 				showPduTaskList: false,
@@ -64,43 +63,76 @@
 
 				areaActiveIndex: 1,
 				areaTimer: null,
-				
 				vmcTimer: null
 			}
 		},
 
 		computed: {
-			...mapGetters(['CUR_VMC_ID', 'HOST_ACTIVATED']),
+			...mapGetters(['HOST_ACTIVATED', 'CUR_HOST_ID']),
 		},
 
 		watch: {
-			CUR_VMC_ID(val) {
-				if (val) {
-					this.showVmcTaskListComponent = true
-					// this.getVmcPartitionData(val)
-					// this.clearVmcInterval()
+			CUR_HOST_ID: {
+				immediate: true,
+				handler(id) {
+					if (id) {
+						console.log(`当前主机ID：${id}`);
+						this.clearVmcInterval()
+						this.showVmcTaskListComponent = false
+						this.showPduTaskListComponent = false
+						if (id === 48 || id === 49) {
+							this.getPduPartitionData(id)
+							this.showPduTaskListComponent = true
+						} else {
+							// this.getVmcPartitionData(id)
+							
+							this.repeatGetVmcData(id)
+							this.showVmcTaskListComponent = true
+							// setTimeout(() => {
+							// 	this.repeatGetVmcData(id)
+							// }, 1000)
+						}
+						// if (index >= 7 && index <= 10) {
+						// 	this.showPduTaskListComponent = true
+						// } else {
+						// 	this.showVmcTaskListComponent = true
+						// 	setTimeout(() => {
+						// 		// this.repeatGetVmcData(this.CUR_VMC_ID)
+						// 	}, 1000)
+						// }
+					} 
 				}
 			},
 			
-			HOST_ACTIVATED(index) {
-				console.log(`当前主机下标：${index}`);
-				this.clearVmcInterval()
-				this.showVmcTaskListComponent = false
-				this.showPduTaskListComponent = false
-				if (index >= 7 && index <= 10) {
-					this.showPduTaskListComponent = true
-				} else {
-					this.showVmcTaskListComponent = true
-					setTimeout(() => {
-						this.repeatGetVmcData(this.CUR_VMC_ID)
-					}, 1000)
+			HOST_ACTIVATED: {
+				immediate: true,
+				handler(index) {
+					// if (index) {
+					// 	console.log(`当前主机下标：${index}`);
+					// 	this.clearVmcInterval()
+					// 	this.showVmcTaskListComponent = false
+					// 	this.showPduTaskListComponent = false
+					// 	if (val === 48 || val === 49) {
+					// 		this.getPduPartitionData()
+					// 	} else {
+					// 		this.getVmcPartitionData()
+					// 	}
+					// 	if (index >= 7 && index <= 10) {
+					// 		this.showPduTaskListComponent = true
+					// 	} else {
+					// 		this.showVmcTaskListComponent = true
+					// 		setTimeout(() => {
+					// 			// this.repeatGetVmcData(this.CUR_VMC_ID)
+					// 		}, 1000)
+					// 	}
+					// } 
 				}
 			}
 		},
 
 		mounted() {
-			this.getVmcPartitionData(241)
-			this.getPduPartitionData()
+			// this.getVmcPartitionData(241)
+			// this.getPduPartitionData()
 		},
 
 		methods: {
@@ -115,10 +147,10 @@
 			},
 			
 			// 定时获取VMC数据，不根据主机轮询获取，1S获取一次
-			repeatGetVmcData(vmcId) {
+			repeatGetVmcData(id) {
 				const _this = this
 				this.vmcTimer = setInterval(() => {
-					_this.getVmcPartitionData(vmcId)
+					_this.getVmcPartitionData(id)
 				}, 1000)
 				this.$once('hook:beforeDestroy', () => {
 					_this.clearVmcInterval()
@@ -126,33 +158,31 @@
 			},
 			
 			// 获取 VMC 任务栈数据
-			async getVmcPartitionData(vmcId) {
+			async getVmcPartitionData(hostId) {
 				this.showTaskList = false
 				let {
 					data: partitionData
-				} = await this.$axios.get(`${this.$apis.vmc}/${vmcId}`)
+				} = await this.$axios.get(`${this.$apis.vmc}/${hostId}`)
 				this.partitionData = partitionData
+				console.log(partitionData);
 				this.vmcTaskList = this.partitionData.partitions
 				
-				const {partitionCount, taskCount} = partitionData 
+				// const {partitionCount, taskCount} = partitionData 
 				// this.set_vmc_task_count(taskCount)
 				// this.set_vmc_partition_count(partitionCount)
-				this.$storage.setVmcPartition(partitionCount)
-				this.$storage.setVmcTask(taskCount)
+				// this.$storage.setVmcPartition(partitionCount)
+				// this.$storage.setVmcTask(taskCount)
 				this.showTaskList = true
 			},
 	
 			// 直接获取两个PDU的任务栈
-			async getPduPartitionData() {
+			async getPduPartitionData(id) {
 				this.showPduTaskList = false
 				this.pduTaskCount = 0
 				this.pduTaskList = []
-				let {data: rtuData} = await this.$axios.get(`${this.$apis.rtu}/48`)
-				this.pduTaskCount += rtuData.taskCount
-				let {data: rtu2Data} = await this.$axios.get(`${this.$apis.rtu}/49`)
-				this.pduTaskCount += rtu2Data.taskCount
+				let {data: rtuData} = await this.$axios.get(`${this.$apis.rtu}/${id}`)
+				this.pduTaskCount = rtuData.taskCount
 				this.pduTaskList.push(rtuData)
-				this.pduTaskList.push(rtu2Data)
 				this.showPduTaskList = true
 			},
 
@@ -162,6 +192,7 @@
 				this.areaActiveIndex = 1
 			},
 
+			// 暂不使用
 			repeatArea() {
 				const len = this.taskList.length
 				const _this = this

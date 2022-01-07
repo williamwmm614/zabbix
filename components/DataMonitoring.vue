@@ -7,30 +7,30 @@
 					<span>数据监控</span>
 				</div>
 				
-				<div v-if="INTERACTION_PARENT_MODULE_NAME === 'HOME'" class="right">
+				<!-- <div v-if="INTERACTION_PARENT_MODULE_NAME === 'HOME'" class="right">
 					<div class="view-detail" @click="handleViewDetail">
 					  <i class="element-icons icon-xiangqing"></i>
 					  查看详情
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		
 		<!-- VMC信息 -->
-		<section class="data-show-section vmc-info-section">
+		<section v-if="hostData" class="data-show-section vmc-info-section">
 			<div class="left-container">
 				<div class="data-row">
 					<img :src="memoryIcon">
 					<div class="info">
 						<label>分区数：</label>
-						<span class="value">{{ vmcPartitionCount }}</span>
+						<span class="value">{{ CUR_HOST_ID === 48 || CUR_HOST_ID === 49 ? 0 : hostData.partitionCount }}</span>
 					</div>
 				</div>
 				<div class="data-row">
 					<img :src="taskIcon">
 					<div class="info">
 						<label>任务数：</label>
-						<span class="value">{{ vmcTaskCount }}</span>
+						<span class="value">{{ hostData.taskCount }}</span>
 					</div>
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 		</div>
 
 		<!-- 主机信息 -->
-		<section class="data-show-section">
+		<section v-if="hostData" class="data-show-section">
 			<div class="left-container">
 				<div class="data-row">
 					<img :src="hostIcon">
@@ -65,25 +65,26 @@
 						<span class="value">{{ hostName }}</span>
 					</div>
 				</div>
-				<div class="data-row">
+				<!-- <div class="data-row">
 					<img :src="runTimeIcon">
 					<div class="info">
 						<label>运行时间：</label>
 						<span class="value">{{ $formatSecondsTime(hostDetailData['system.uptime'].value) }}</span>
 					</div>
-				</div>
+				</div> -->
 				<div class="data-row">
 					<img :src="cpuIcon">
 					<div class="info">
 						<label>CPU核数：</label>
-						<span class="value">{{ hostDetailData['system.cpu.num'].value }}</span>
+						<span class="value">1</span>
+						<!-- <span class="value">{{ hostDetailData['system.cpu.num'].value }}</span> -->
 					</div>
 				</div>
 				<div class="data-row">
 					<img :src="memoryIcon">
 					<div class="info">
 						<label>总内存：</label>
-						<span class="value">{{ formatMemoryTotal(hostDetailData['vm.memory.size[total]'].value) }}GB</span>
+						<span class="value">{{ (hostData.memory * 0.1).toFixed(1) }}GB</span>
 					</div>
 				</div>
 			</div>
@@ -134,8 +135,8 @@
 				partitionIcon: require('@/assets/images/dataMonitor/partition.png'),
 				taskIcon: require('@/assets/images/dataMonitor/task.png'),
 				lineImg: require('@/assets/images/task/line.png'),
-				vmcPartitionCount: 0,
-				vmcTaskCount: 0,
+				
+				hostData: null,
 
 				// VMC进度条信息
 				vmcCpuConfig: {
@@ -182,36 +183,7 @@
 				hostList: [],
 				hostName: '',
 				localCurHostData: {},
-				hostDetailData: {
-					'system.uptime': {
-						value: ''
-					}, // 运行时间
-					'system.cpu.num': {
-						value: ''
-					}, // CPU 核数
-					'vm.memory.size[total]': {
-						value: ''
-					}, // 总内存
-					'system.cpu.util': {
-						value: ''
-					}, // CPU利用率
-					'vm.memory.utilization': {
-						value: ''
-					}, // 内存利用率
-					'vfs.fs.size[/,pused]': {
-						value: ''
-					}, // 磁盘利用率
-
-					// 总空间
-					'vfs.fs.size[/,total]': {
-						value: ''
-					},
-
-					// 已用空间
-					'vfs.fs.size[/,used]': {
-						value: ''
-					}
-				},
+				dataTimer: null
 			}
 		},
 
@@ -224,41 +196,23 @@
 		},
 
 		watch: {
-			CUR_HOST_ID(val) {
-				if (val) {
-					this.curHostId = val
-					this.getHostInfo()
+			CUR_HOST_ID(id) {
+				if (id) {
+					this.clearDataInterval()
+					this.curHostId = id
 					this.getAllHostData()
+					if (id !== 48 && id !== 49) this.repeatGetData()
 				}
 			},
-			
-			HOST_ACTIVATED(val) {
-				if (val === 0) return
-				if (val >= 1 && val <= 3) this.getVmcPartitionData(241)
-				if (val > 3 && val <= 6) this.getVmcPartitionData(242)
-			}
 		},
 		
 		mounted() {
-			if (this.referencePage === 'RCRWQY' || this.referencePage === 'GZFC') {
-				this.localCurHostData = this.$storage.getCurHostData()
-				this.curHostId = this.localCurHostData.hostId
-				this.hostName = this.localCurHostData.ip
-				this.getHostInfo()
-			}
+			this.localCurHostData = this.$storage.getCurHostData()
+			this.curHostId = this.localCurHostData.hostId
 		},
 
 		methods: {
 			...mapMutations(['set_cur_vmc_id', 'set_cur_host_id']),
-			
-			async getVmcPartitionData(vmcId) {
-				let {
-					data: partitionData
-				} = await this.$axios.get(`${this.$apis.vmc}/${vmcId}`)
-				const {partitionCount, taskCount} = partitionData 
-				this.vmcPartitionCount = partitionCount
-				this.vmcTaskCount = taskCount
-			},
 			
 			// 查看详情
 			handleViewDetail() {
@@ -281,84 +235,71 @@
 			formatMemoryTotal(val) {
 				return val ? (val / 1024 / 1024 / 1024).toFixed(3) : 0
 			},
+			
+			clearDataInterval() {
+				clearInterval(this.dataTimer)
+				this.dataTimer = null
+			},
+			
+			repeatGetData() {
+				const _this = this
+				let module = this.INTERACTION_PARENT_MODULE_NAME !== 'RCRWQY' && this.INTERACTION_PARENT_MODULE_NAME !== 'GZFC'
+				if (module) {
+					this.dataTimer = setInterval(() => {
+						_this.getHostInfo()
+					}, 1000)
+					
+					this.$once('hook:beforeDestory', () => {
+						_this.clearDataInterval()
+					})
+				} else {
+					this.getHostInfo()
+				}
+			},
 
 			async getAllHostData() {
 				const hostData = this.$storage.getCurHostData()
-				this.hostName = hostData.ip
+				this.hostName = hostData.host
 			},
 
 			async getHostInfo() {
 				const _this = this
 				this.showChart = false
+				this.hostData = null
 				const hostId = this.curHostId
-
-				let json = {
-					hostid: hostId,
-					items: [
-						{
-							key: 'system.uptime',
-							limit: 1
-						},
-						{
-							key: 'system.cpu.num',
-							limit: 1
-						},
-						{
-							key: 'vm.memory.size[total]',
-							limit: 1
-						},
-						{
-							key: 'system.cpu.util',
-							limit: 1
-						},
-						{
-							key: 'vm.memory.utilization',
-							limit: 1
-						},
-						{
-							key: 'vfs.fs.size[/,pused]',
-							limit: 1
-						},
-						{
-							key: 'vfs.fs.size[/,total]',
-							limit: 1
-						},
-						{
-							key: 'vfs.fs.size[/,used]',
-							limit: 1
-						},
-					]
-				}
+				
+				let url = this.$apis.vmc
+				let module = this.INTERACTION_PARENT_MODULE_NAME !== 'RCRWQY' && this.INTERACTION_PARENT_MODULE_NAME !== 'GZFC'
+				if (this.hostName.includes('RTU') && module) url = this.$apis.rtu
 				const {
 					data: hostInfo
-				} = await this.$axios.post(`${this.$apis.host}`, json)
+				} = await this.$axios.get(`${url}/${hostId}`)
 
-				let keys = Object.keys(this.hostDetailData)
-				keys.map(key => {
-					let result = hostInfo.find(e => e.key === key)
-					if (result) {
-						let {
-							items
-						} = result
-						if (items.length) {
-							this.$set(_this.hostDetailData[key], 'value', items[0].value)
-						} else {
-							this.$set(_this.hostDetailData[key], 'value', '')
-						}
-					}
-				})
+				this.hostData = hostInfo
+				
+				const {
+					cpu,
+					dsp,
+					cpuUtilize,
+					diskUtilize,
+					memoryUtilize
+				} = hostInfo
+				this.$set(this.vmcCpuConfig, 'value', cpu)
+				// 轮询到DSP主机时，DSP值写死为0
+				if (hostId === 17 || hostId === 18 || hostId === 32 || hostId === 33 || hostId === 34) {
+					this.$set(this.vmcDspConfig, 'value', 0)
+				} else {
+					this.$set(this.vmcDspConfig, 'value', dsp)
+				}
 
 				// CPU利用率
-				let cpu = `${Number(this.hostDetailData['system.cpu.util'].value).toFixed(1)}`
-				this.$set(this.cpuConfig, 'value', cpu)
+				this.$set(this.cpuConfig, 'value', cpuUtilize)
 
 				// 内存利用率
-				let memory = `${Number(this.hostDetailData['vm.memory.utilization'].value).toFixed(1)}`
-				this.$set(this.memoryConfig, 'value', memory)
+				this.$set(this.memoryConfig, 'value', memoryUtilize)
 
 				// 磁盘利用率
-				let disk = `${Number(this.hostDetailData['vfs.fs.size[/,pused]'].value).toFixed(1)}`
-				this.$set(this.diskConfig, 'value', disk)
+				this.$set(this.diskConfig, 'value', diskUtilize)
 				this.showChart = true
 			}
 		}
@@ -427,6 +368,11 @@
 						label {
 							color: #95AAC9;
 							@include text-justify;
+							padding-left: 10px;
+						}
+						
+						p {
+							color: #95AAC9;
 							padding-left: 10px;
 						}
 

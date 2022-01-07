@@ -119,9 +119,9 @@
 				// 	await this.$axios.get(this.$apis.xcjGzmn)
 				// 	return
 				// }
-				if (index === 1) await this.$axios.get(this.$apis.xcjGzmn) 
-				if (index === 2) await this.$axios.get(this.$apis.fqjGzmn)
-				if (index === 3) await this.$axios.get(this.$apis.computerGzmn)
+				if (index === 1) await this.$axios.get(`/api/udp/vmcs/${16}/hostInstruct?host=RTU-1`) 
+				if (index === 2) await this.$axios.get(`/api/udp/vmcs/${17}/partitionInstruct?host=RTU-1&partition=2`)
+				if (index === 3) await this.$axios.get(`/api/udp/vmcs/${18}/taskInstruct?host=RTU-1&partition=2&task=3`)
 			}
 		}
 	}

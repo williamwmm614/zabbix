@@ -8,21 +8,21 @@
 						@click="handleHostClick(1, vmcData.vmc1.hostA, 'HOST')">
 						<img v-if="hostActivatedIndex === 1" :src="hostActiveGif">
 						<img v-else :src="hostImgUrl">
-						<p>{{ vmcData.vmc1.hostA.alias }}</p>
+						<p>{{ vmcData.vmc1.hostA.host }}</p>
 					</div>
 					<div
 						class="host" :class="hostActivatedIndex === 2 ? 'host-activated' : ''"
 						@click="handleHostClick(2, vmcData.vmc1.hostB, 'HOST')">
 						<img v-if="hostActivatedIndex === 2" :src="hostActiveGif">
 						<img v-else :src="hostImgUrl">
-						<p>{{ vmcData.vmc1.hostB.alias }}</p>
+						<p>{{ vmcData.vmc1.hostB.host }}</p>
 					</div>
 					<div
 						class="host" :class="hostActivatedIndex === 3 ? 'host-activated' : ''"
 						@click="handleHostClick(3, vmcData.vmc1.hostC, 'HOST')">
 						<img v-if="hostActivatedIndex === 3" :src="hostActiveGif">
 						<img v-else :src="hostImgUrl">
-						<p>{{ vmcData.vmc1.hostC.alias }}</p>
+						<p>{{ vmcData.vmc1.hostC.host }}</p>
 					</div>
 				</div>
 				
@@ -32,21 +32,21 @@
 						@click="handleHostClick(4, vmcData.vmc2.hostA, 'HOST')">
 						<img v-if="hostActivatedIndex === 4" :src="hostActiveGif">
 						<img v-else :src="hostImgUrl">
-						<p>{{ vmcData.vmc2.hostA.alias }}</p>
+						<p>{{ vmcData.vmc2.hostA.host }}</p>
 					</div>
 					<div
 						class="host" :class="hostActivatedIndex === 5 ? 'host-activated' : ''"
 						@click="handleHostClick(5, vmcData.vmc2.hostB, 'HOST')">
 						<img v-if="hostActivatedIndex === 5" :src="hostActiveGif">
 						<img v-else :src="hostImgUrl">
-						<p>{{ vmcData.vmc2.hostB.alias }}</p>
+						<p>{{ vmcData.vmc2.hostB.host }}</p>
 					</div>
 					<div
 						class="host" :class="hostActivatedIndex === 6 ? 'host-activated' : ''"
 						@click="handleHostClick(6, vmcData.vmc2.hostC, 'HOST')">
 						<img v-if="hostActivatedIndex === 6" :src="hostActiveGif">
 						<img v-else :src="hostImgUrl">
-						<p>{{ vmcData.vmc2.hostC.alias }}</p>
+						<p>{{ vmcData.vmc2.hostC.host }}</p>
 					</div>
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 				<svg-line-left></svg-line-left>
 				<div class="switch">
 					<img :src="switchImgUrl">
-					<p>TTE交换机</p>
+					<p>交换机</p>
 				</div>
 				<svg-line-right></svg-line-right>
 			</div>
@@ -73,13 +73,13 @@
 				<svg-line-tree></svg-line-tree>
 				<div class="pdu" @click="handleHostClick(7, pduData.pdu1, 'PDU')">
 					<img v-if="hostActivatedIndex === 7" :src="pduActiveGif">
-					<img v-else :src="pduImgUrl">
+					<img v-else :src="pduDoneImgUrl">
 					<p>{{ pduData.pdu1.host }}</p>
 				</div>
 				
 				<div class="pdu" @click="handleHostClick(8, pduData.pdu2, 'PDU')">
 					<img v-if="hostActivatedIndex === 8" :src="pduActiveGif">
-					<img v-else :src="pduImgUrl">
+					<img v-else :src="pduDoneImgUrl">
 					<p>{{ pduData.pdu2.host }}</p>
 				</div>
 				
@@ -98,7 +98,7 @@
 		</div>
 
 		<!-- 容错管理、集中并机模块激活时，在拓扑图下面显示 VMC运行状态 -->
-		<vmc-run-state v-if="INTERACTION_PARENT_MODULE_NAME === 'RCGL' || INTERACTION_PARENT_MODULE_NAME === 'JZBJ'"></vmc-run-state>
+		<!-- <vmc-run-state v-if="INTERACTION_PARENT_MODULE_NAME === 'RCGL' || INTERACTION_PARENT_MODULE_NAME === 'JZBJ'"></vmc-run-state> -->
 	</div>
 </template>
 
@@ -143,30 +143,34 @@
 
 				vmcData: {
 					vmc1: {
-						id: 241,
 						name: 'VMC1',
 						hostA: {
-							hostId: ''
+							hostId: 16,
+							host: 'CPU'
 						},
 						hostB: {
-							hostId: ''
+							hostId: 17,
+							host: 'DSP'
 						},
 						hostC: {
-							hostId: ''
+							hostId: 18,
+							host: 'GPU'
 						}
 					},
 
 					vmc2: {
-						id: 242,
 						name: 'VMC2',
 						hostA: {
-							hostId: ''
+							hostId: 32,
+							host: 'CPU'
 						},
 						hostB: {
-							hostId: ''
+							hostId: 33,
+							host: 'DSP'
 						},
 						hostC: {
-							hostId: ''
+							hostId: 34,
+							host: 'GPU'
 						}
 					},
 				},
@@ -174,21 +178,25 @@
 				pduData: {
 					pdu1: {
 						id: 48,
+						host: 'RTU-1',
 						hostId: '',
 					},
 
 					pdu2: {
 						id: 49,
+						host: 'RTU-2',
 						hostId: ''
 					},
 					
 					pdu3: {
 						id: 48,
+						host: 'RTU-3',
 						hostId: '',
 					},
 					
 					pdu4: {
 						id: 49,
+						host: 'RTU-4',
 						hostId: ''
 					},
 				},
@@ -223,7 +231,7 @@
 		},
 
 		mounted() {
-			this.getVmcConfigData()
+			this.initHostData()
 			this.getTopologyData()
 		},
 
@@ -233,110 +241,9 @@
 				'set_host_activated',
 				'set_cur_host_id'
 			]),
-
-			async getVmcConfigData() {
-				// const localVmcConfigData = this.$storage.getVmcConfig()
-				// if (localVmcConfigData) {
-				// 	this.resetVmcConfigData(localVmcConfigData)
-				// 	return
-				// }
-				const {data: configData} = await this.$axios.get(`${this.$apis.config}`)
-				this.$storage.setVmcConfig(configData)
-				this.resetVmcConfigData(configData)
-			},
-
-			// SET VMC JSON
-			resetVmcConfigData(configData) {
-				this.$set(this.vmcData.vmc1.hostA, 'hostId', +configData['VMC1-A'])
-				this.$set(this.vmcData.vmc1.hostB, 'hostId', +configData['VMC1-B'])
-				this.$set(this.vmcData.vmc1.hostC, 'hostId', +configData['VMC1-C'])
-				this.$set(this.vmcData.vmc2.hostA, 'hostId', +configData['VMC2-A'])
-				this.$set(this.vmcData.vmc2.hostB, 'hostId', +configData['VMC2-B'])
-				this.$set(this.vmcData.vmc2.hostC, 'hostId', +configData['VMC2-C'])
-				this.$set(this.pduData.pdu1, 'hostId', +configData['RTU-1'])
-				this.$set(this.pduData.pdu2, 'hostId', +configData['RTU-2'])
-				this.$set(this.pduData.pdu3, 'hostId', +configData['RTU-1'])
-				this.$set(this.pduData.pdu4, 'hostId', +configData['RTU-2'])
-			},
 			
 			// Set HOST DATA OF VMC AND PDU 
 			initHostData(topologyData) {
-				for (let i = 0; i < 3; i++) {
-					if (i === 0) {
-						const result = topologyData.find(e => e.hostid === this.vmcData.vmc1.hostA.hostId)
-						if (result) {
-							this.$set(this.vmcData.vmc1.hostA, 'ip', result.ip)
-							this.$set(this.vmcData.vmc1.hostA, 'host', result.host)
-							this.$set(this.vmcData.vmc1.hostA, 'alias', this.$replaceStr(result.host, '计算机'))
-							this.$set(this.vmcData.vmc1.hostA, 'available', result.available)
-						}
-						
-						const result2 = topologyData.find(e => e.hostid === this.vmcData.vmc2.hostA.hostId)
-						if (result2) {
-							this.$set(this.vmcData.vmc2.hostA, 'ip', result2.ip)
-							this.$set(this.vmcData.vmc2.hostA, 'host', result2.host)
-							this.$set(this.vmcData.vmc2.hostA, 'alias', this.$replaceStr(result2.host, '计算机'))
-							this.$set(this.vmcData.vmc2.hostA, 'available', result2.available)
-						}
-					}
-				
-					if (i === 1) {
-						const result = topologyData.find(e => e.hostid === this.vmcData.vmc1.hostB.hostId)
-						if (result) {
-							this.$set(this.vmcData.vmc1.hostB, 'ip', result.ip)
-							this.$set(this.vmcData.vmc1.hostB, 'host', result.host)
-							this.$set(this.vmcData.vmc1.hostB, 'alias', this.$replaceStr(result.host, '计算机'))
-							this.$set(this.vmcData.vmc1.hostB, 'available', result.available)
-						}
-				
-						const result2 = topologyData.find(e => e.hostid === this.vmcData.vmc2.hostB.hostId)
-						if (result2) {
-							this.$set(this.vmcData.vmc2.hostB, 'ip', result2.ip)
-							this.$set(this.vmcData.vmc2.hostB, 'host', result2.host)
-							this.$set(this.vmcData.vmc2.hostB, 'alias', this.$replaceStr(result2.host, '计算机'))
-							this.$set(this.vmcData.vmc2.hostB, 'available', result2.available)
-						}
-					}
-				
-					if (i === 2) {
-						const result = topologyData.find(e => e.hostid === this.vmcData.vmc1.hostC.hostId)
-						if (result) {
-							this.$set(this.vmcData.vmc1.hostC, 'ip', result.ip)
-							this.$set(this.vmcData.vmc1.hostC, 'host', result.host)
-							this.$set(this.vmcData.vmc1.hostC, 'alias', this.$replaceStr(result.host, '计算机'))
-							this.$set(this.vmcData.vmc1.hostC, 'available', result.available)
-						}
-				
-						const result2 = topologyData.find(e => e.hostid === this.vmcData.vmc2.hostC.hostId)
-						if (result2) {
-							this.$set(this.vmcData.vmc2.hostC, 'ip', result2.ip)
-							this.$set(this.vmcData.vmc2.hostC, 'host', result2.host)
-							this.$set(this.vmcData.vmc2.hostC, 'alias', this.$replaceStr(result2.host, '计算机'))
-							this.$set(this.vmcData.vmc2.hostC, 'available', result2.available)
-						}
-					}
-				}
-				
-				const pduResult = topologyData.find(e => e.hostid === this.pduData.pdu1.hostId)
-				if (pduResult) {
-					this.$set(this.pduData.pdu1, 'ip', pduResult.ip)
-					this.$set(this.pduData.pdu1, 'host', pduResult.host)
-					this.$set(this.pduData.pdu1, 'available', pduResult.available)
-					
-					this.$set(this.pduData.pdu3, 'ip', pduResult.ip)
-					this.$set(this.pduData.pdu3, 'host', pduResult.host)
-					this.$set(this.pduData.pdu3, 'available', pduResult.available)
-				}
-				const pduResult2 = topologyData.find(e => e.hostid === this.pduData.pdu2.hostId)
-				if (pduResult2) {
-					this.$set(this.pduData.pdu2, 'ip', pduResult2.ip)
-					this.$set(this.pduData.pdu2, 'host', pduResult2.host)
-					this.$set(this.pduData.pdu2, 'available', pduResult2.available)
-					
-					this.$set(this.pduData.pdu4, 'ip', pduResult2.ip)
-					this.$set(this.pduData.pdu4, 'host', pduResult2.host)
-					this.$set(this.pduData.pdu4, 'available', pduResult2.available)
-				}
 				this.$storage.setVmcPduData({
 					vmcData: this.vmcData,
 					pduData: this.pduData
@@ -345,10 +252,10 @@
 
 			// 获取拓扑图数据
 			async getTopologyData() {
-				const {
-					data: topologyData
-				} = await this.$axios.get(`${this.$apis.topology}`)
-				this.initHostData(topologyData)
+				// const {
+				// 	data: topologyData
+				// } = await this.$axios.get(`${this.$apis.topology}`)
+				// this.initHostData(topologyData)
 				// 触发主机轮询
 				this.repeatHost()
 			},
@@ -370,19 +277,20 @@
 				this.set_host_activated(hostIndex) // 存储当前激活的主机下标
 				this.setHostIdVuex(hostIndex)
 				
-				if (type === 'HOST') {
-					// 存储 VMC 的ID
-					let vmcId = 0
-					if (this.hostActivatedIndex <= 3) {
-						vmcId = this.vmcData.vmc1.id
-					} else {
-						if (this.hostActivatedIndex < 9 ) {
-							vmcId = this.vmcData.vmc2.id
-						}
-					}
-					this.set_cur_vmc_id(vmcId)
-				}
+				// if (type === 'HOST') {
+				// 	// 存储 VMC 的ID
+				// 	let vmcId = 0
+				// 	if (this.hostActivatedIndex <= 3) {
+				// 		vmcId = this.vmcData.vmc1.id
+				// 	} else {
+				// 		if (this.hostActivatedIndex < 9 ) {
+				// 			vmcId = this.vmcData.vmc2.id
+				// 		}
+				// 	}
+				// 	this.set_cur_vmc_id(vmcId)
+				// }
 				
+				// 点击主机后停掉所有主机轮巡
 				this.clearHostClickCountInterval()
 				// 无操作 10s 后开启主机轮循
 				this.hostClickCountTimer = setInterval(() => {
@@ -391,8 +299,6 @@
 				
 				this.clearIntervalTask('HOST')
 				this.clearIntervalTask('PDU')
-				
-				// TODO 无操作10s重新开始轮询主机
 			},
 			
 			clearIntervalTask(type) {
@@ -429,14 +335,14 @@
 					4: this.vmcData.vmc2.hostA.hostId,
 					5: this.vmcData.vmc2.hostB.hostId,
 					6: this.vmcData.vmc2.hostC.hostId,
-					7: this.pduData.pdu1.hostId,
-					8: this.pduData.pdu2.hostId,
-					9: this.pduData.pdu3.hostId,
-					10: this.pduData.pdu4.hostId,
+					7: this.pduData.pdu1.id,
+					8: this.pduData.pdu2.id,
+					9: this.pduData.pdu3.id,
+					10: this.pduData.pdu4.id,
 				}
-				
+				// 将循环到的主机ID存到vuex，供全局监听使用
 				this.set_cur_host_id(hostIdJson[hostIndex])
-				// 把每次循环到的主机ID存储到本地供其他页面使用
+				// 把每次循环到的主机数据存储到本地供其他页面使用
 				this.$storage.setCurHostData(hostDataJson[hostIndex])
 			},
 			
@@ -469,7 +375,6 @@
 					this.set_cur_host_id(0)
 					// 10S重新显示分区任务，隐藏主机运行状态
 					setTimeout(() => {
-						this.setFirstData()
 						this.repeatHost()
 					}, 10 * 1000)
 					return

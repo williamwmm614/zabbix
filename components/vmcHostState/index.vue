@@ -12,9 +12,7 @@
 				<!-- 运行状态 -->
 				<vmc-run-state
 					:vmc1Name="vmc1Data.alias"
-					:vmc2Name="vmc2Data.alias"
-					:vmc1HostList="vmc1Data.hostList"
-					:vmc2HostList="vmc2Data.hostList">
+					:vmc2Name="vmc2Data.alias">
 				</vmc-run-state>
 			</div>
 
@@ -74,8 +72,8 @@
 		
 		watch: {
 			CUR_HOST_ID(val) {
-				this.getVmcPartitionData(this.vmc1Data.id, 'VMC1')
-				this.getVmcPartitionData(this.vmc2Data.id, 'VMC2')
+				if (val) this.getVmcPartitionData(val)
+				// this.getVmcPartitionData(this.vmc2Data.id, 'VMC2')
 			}
 		},
 
@@ -97,21 +95,21 @@
 				this.vmc2Data.name = vmc2.name
 				this.vmc2Data.alias = this.$replaceStr(vmc2.name, '计算机')
 				this.vmc2Data.hostList = [vmc2.hostA, vmc2.hostB, vmc2.hostC]
-				this.getVmcPartitionData(this.vmc1Data.id, 'VMC1')
-				this.getVmcPartitionData(this.vmc2Data.id, 'VMC2')
+				this.getVmcPartitionData(16)
+				// this.getVmcPartitionData(this.vmc2Data.id, 'VMC2')
 				this.showSection = true
 			},
 			
 			// 获取VMC分区任务数据
-			async getVmcPartitionData(vmcId, type) {
+			async getVmcPartitionData(hostId, type) {
 				this.vmc1Data.taskList = []
 				this.vmc2Data.taskList = []
 				let {
 					data: partitionData
-				} = await this.$axios.get(`${this.$apis.vmc}/${vmcId}`)
+				} = await this.$axios.get(`${this.$apis.vmc}/${hostId}`)
 				const listData = partitionData.partitions
-				if (type === 'VMC1') this.vmc1Data.taskList = listData
-				if (type === 'VMC2') this.vmc2Data.taskList = listData
+				this.vmc1Data.taskList = listData
+				this.vmc2Data.taskList = listData
 			},
 		}
 	}

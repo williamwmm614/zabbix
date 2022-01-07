@@ -3,7 +3,7 @@
 		<div class="home-container">
 			<section class="page-title-section">
 				<!-- <img class="title-img" :src="fsfqTitleImg"> -->
-				<h3>开放式综合电子演示验证系统地面软件</h3>
+				<h3>高性能计算演示验证系统地面软件</h3>
 				<span class="cur-time">{{ curTime }}</span>
 			</section>
 

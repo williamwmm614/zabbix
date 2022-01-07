@@ -10,9 +10,10 @@
 						:class="hostActiveIndex === index + 1 ? 'host-activated' : ''"
 						v-for="(host, index) in vmc1HostList"
 						:key="host.host">
-						<img v-if="host.available === 1" :src="hostRunImg">
-						<img v-else :src="hostDoneImg">
-						<p>{{ $replaceStr(host.host, '计算机') }}</p>
+						<img :src="hostRunImg">
+						<!-- <img v-if="host.available === 1" :src="hostRunImg">
+						<img v-else :src="hostDoneImg"> -->
+						<p>{{ host.host }}</p>
 					</div>
 				</div>
 			</div>
@@ -28,9 +29,11 @@
 						:class="hostActiveIndex === index + 4 ? 'host-activated' : ''"
 						v-for="(host, index) in vmc2HostList"
 						:key="host.host">
-						<img v-if="host.available === 1" :src="hostRunImg">
-						<img v-else :src="hostDoneImg">
-						<p>{{ $replaceStr(host.host, '计算机') }}</p>
+						<img :src="hostRunImg">
+						<!-- <img v-else :src="hostDoneImg"> -->
+						<!-- <img v-if="host.available === 1" :src="hostRunImg">
+						<img v-else :src="hostDoneImg"> -->
+						<p>{{ host.host }}</p>
 					</div>
 				</div>
 			</div>
@@ -52,16 +55,6 @@
 			vmc2Name: {
 				type: String,
 				default: ''
-			},
-
-			vmc1HostList: {
-				type: Array,
-				default: () => []
-			},
-			
-			vmc2HostList: {
-				type: Array,
-				default: () => []
 			}
 		},
 
@@ -72,7 +65,9 @@
 				hostActiveIndex: 1,
 				hostTimer: null,
 				localHostData: {},
-				localCurHostId: 0
+				localCurHostId: 0,
+				vmc1HostList: [],
+				vmc2HostList: []
 			}
 		},
 		
@@ -80,6 +75,12 @@
 			this.localHostData = this.$storage.getVmcPduData()
 			const localCurHostData = this.$storage.getCurHostData()
 			this.localCurHostId = localCurHostData.hostId
+			
+			const {vmcData} = this.localHostData
+			const {vmc1, vmc2} = vmcData
+			this.vmc1HostList = [vmc1.hostA, vmc1.hostB, vmc1.hostC]
+			this.vmc2HostList = [vmc2.hostA, vmc2.hostB, vmc2.hostC]
+			
 			setTimeout(() => {
 				this.repeatHost('FIRST')
 			}, 500)
@@ -92,7 +93,7 @@
 			]),
 			
 			// 存储轮询主机ID
-			setHostIdVuex(hostIndex) {
+			async setHostIdVuex(hostIndex) {
 				const {vmcData, pduData} = this.localHostData
 				const {vmc1, vmc2} = vmcData
 				const {pdu1, pdu2} = pduData
@@ -105,8 +106,18 @@
 					6: vmc2.hostC.hostId
 				}
 				
+				const hostDataJson = {
+					1: vmc1.hostA,
+					2: vmc1.hostB,
+					3: vmc1.hostC,
+					4: vmc2.hostA,
+					5: vmc2.hostB,
+					6: vmc2.hostC,
+				}
+				
 				this.set_host_activated(hostIndex)
 				this.set_cur_host_id(hostIdJson[hostIndex])
+				this.$storage.setCurHostData(hostDataJson[hostIndex])
 			},
 			
 			clearHostIntervalTask() {

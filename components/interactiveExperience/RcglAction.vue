@@ -12,24 +12,24 @@
 			<div class="row">
 				<article
 					v-for="(item, index) in rcglImgsData.vmc1HostList"
-					:key="item"
+					:key="item.host"
 					@click="handleModuleClick(index + 1, item)">
 					<img v-if="activatedModuleIndex === index + 1" :src="rcglImgsData.activeImg" class="active-img">
 					<img v-else :src="rcglImgsData.vmcFaultImg">
 					<div class="name" :class="activatedModuleIndex === index + 1 ? 'name-active' : ''">
-						<span>{{ $replaceStr(item, '计算机') }} 故障</span>
+						<span>{{ $replaceStr(item.host, '计算机') }} 故障</span>
 					</div>
 				</article>
 			</div>
 			<div class="row">
 				<article
 					v-for="(item, index) in rcglImgsData.vmc2HostList"
-					:key="item"
+					:key="item.host"
 					@click="handleModuleClick(index + 4, item)">
 					<img v-if="activatedModuleIndex === index + 4" :src="rcglImgsData.activeImg" class="active-img">
 					<img v-else :src="rcglImgsData.vmcFaultImg">
 					<div class="name" :class="activatedModuleIndex === index + 4 ? 'name-active' : ''">
-						<span>{{ $replaceStr(item, '计算机') }} 故障</span>
+						<span>{{ $replaceStr(item.host, '计算机') }} 故障</span>
 					</div>
 				</article>
 			</div>
@@ -64,15 +64,15 @@
 			// 交互体验区模块点击事件
 			async handleModuleClick(index, item) {
 				this.activatedModuleIndex = index
-				await this.$axios.get(`${this.$apis.hostMerge}?host=${item}`)
+				await this.$axios.get(`/api/udp/vmcs/${item.hostId}/hostMerge?host=${item.host}`)
 			},
 			
 			initData() {
 				const localHostData = this.$storage.getVmcPduData()
 				const {vmcData} = localHostData
 				const {vmc1, vmc2} = vmcData
-				this.rcglImgsData.vmc1HostList = [vmc1.hostA.host, vmc1.hostB.host, vmc1.hostC.host]
-				this.rcglImgsData.vmc2HostList = [vmc2.hostA.host, vmc2.hostB.host, vmc2.hostC.host]
+				this.rcglImgsData.vmc1HostList = [vmc1.hostA, vmc1.hostB, vmc1.hostC]
+				this.rcglImgsData.vmc2HostList = [vmc2.hostA, vmc2.hostB, vmc2.hostC]
 			}
 		}
 	}

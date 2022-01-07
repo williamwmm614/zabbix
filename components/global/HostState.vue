@@ -18,52 +18,60 @@
 			<section v-if="showHost" class="host-state-wrapper">
 				<div class="vmc-host-row">
 					<div class="host">
-						<img v-if="localHostData.vmcData.vmc1.hostA.available === 1" :src="hostRunImg">
-						<img v-else :src="hostDoneImg">
+						<!-- <img v-if="localHostData.vmcData.vmc1.hostA.available === 1" :src="hostRunImg">
+						<img v-else :src="hostDoneImg"> -->
+						<img :src="hostRunImg">
 						<p>{{ $replaceStr(localHostData.vmcData.vmc1.hostA.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
-						<img v-if="localHostData.vmcData.vmc1.hostB.available === 1" :src="hostRunImg">
-						<img v-else :src="hostDoneImg">
+						<!-- <img v-if="localHostData.vmcData.vmc1.hostB.available === 1" :src="hostRunImg">
+						<img v-else :src="hostDoneImg"> -->
+						<img :src="hostRunImg">
 						<p>{{ $replaceStr(localHostData.vmcData.vmc1.hostB.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
-						<img v-if="localHostData.vmcData.vmc1.hostC.available === 1" :src="hostRunImg">
-						<img v-else :src="hostDoneImg">
+						<!-- <img v-if="localHostData.vmcData.vmc1.hostC.available === 1" :src="hostRunImg">
+						<img v-else :src="hostDoneImg"> -->
+						<img :src="hostRunImg">
 						<p>{{ $replaceStr(localHostData.vmcData.vmc1.hostC.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
-						<img v-if="localHostData.vmcData.vmc2.hostA.available === 1" :src="hostRunImg">
-						<img v-else :src="hostDoneImg">
+						<!-- <img v-if="localHostData.vmcData.vmc2.hostA.available === 1" :src="hostRunImg">
+						<img v-else :src="hostDoneImg"> -->
+						<img :src="hostRunImg">
 						<p>{{ $replaceStr(localHostData.vmcData.vmc2.hostA.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
-						<img v-if="localHostData.vmcData.vmc2.hostB.available === 1" :src="hostRunImg">
-						<img v-else :src="hostDoneImg">
+						<!-- <img v-if="localHostData.vmcData.vmc2.hostB.available === 1" :src="hostRunImg">
+						<img v-else :src="hostDoneImg"> -->
+						<img :src="hostRunImg">
 						<p>{{ $replaceStr(localHostData.vmcData.vmc2.hostB.host, '计算机') }}</p>
 					</div>
 
 					<div class="host">
-						<img v-if="localHostData.vmcData.vmc2.hostC.available === 1" :src="hostRunImg">
-						<img v-else :src="hostDoneImg">
+						<!-- <img v-if="localHostData.vmcData.vmc2.hostC.available === 1" :src="hostRunImg">
+						<img v-else :src="hostDoneImg"> -->
+						<img :src="hostRunImg">
 						<p>{{ $replaceStr(localHostData.vmcData.vmc2.hostC.host, '计算机') }}</p>
 					</div>
 				</div>
 
 				<div class="pdu-host-row">
 					<div class="host pdu1">
-						<img v-if="localHostData.pduData.pdu1.available === 1" :src="pduRunImg">
-						<img v-else :src="pduDoneImg">
+						<!-- <img v-if="localHostData.pduData.pdu1.available === 1" :src="pduRunImg">
+						<img v-else :src="pduDoneImg"> -->
+						<img :src="pduDoneImg">
 						<p>{{ localHostData.pduData.pdu1.host }}</p>
 					</div>
 
 					<div class="host pdu2">
-						<img v-if="localHostData.pduData.pdu2.available === 1" :src="pduRunImg">
-						<img v-else :src="pduDoneImg">
+						<!-- <img v-if="localHostData.pduData.pdu2.available === 1" :src="pduRunImg">
+						<img v-else :src="pduDoneImg"> -->
+						<img :src="pduDoneImg">
 						<p>{{ localHostData.pduData.pdu2.host }}</p>
 					</div>
 					
@@ -120,19 +128,22 @@
 			
 			async getPartitionData() {
 				let {
-					data: partitionData
-				} = await this.$axios.get(`${this.$apis.vmc}/${this.localHostData.vmcData.vmc1.id}`)
+					data: hostData
+				} = await this.$axios.get(`${this.$apis.vmc}/16`)
 				
-				let {
-					data: partitionData2
-				} = await this.$axios.get(`${this.$apis.vmc}/${this.localHostData.vmcData.vmc2.id}`)
+				// let {
+				// 	data: partitionData2
+				// } = await this.$axios.get(`${this.$apis.vmc}/${this.localHostData.vmcData.vmc2.id}`)
 			
 				// 所有分区总数
-				this.partitionCount = partitionData.partitionCount + partitionData2.partitionCount
+				this.partitionCount = hostData.partitionCount
+				
+				let {data: pduData} = await this.$axios.get(`${this.$apis.rtu}/48`)
+				this.taskCount = pduData.taskCount + hostData.taskCount
 			
-				let {data: pduData} = await this.$axios.get(`${this.$apis.rtu}/${this.localHostData.pduData.pdu1.id}`)
-				let {data: pduData2} = await this.$axios.get(`${this.$apis.rtu}/${this.localHostData.pduData.pdu2.id}`)
-				this.taskCount = pduData.taskCount + pduData2.taskCount + partitionData.taskCount + partitionData2.taskCount
+				// let {data: pduData} = await this.$axios.get(`${this.$apis.rtu}/${this.localHostData.pduData.pdu1.id}`)
+				// let {data: pduData2} = await this.$axios.get(`${this.$apis.rtu}/${this.localHostData.pduData.pdu2.id}`)
+				// this.taskCount = pduData.taskCount + pduData2.taskCount + partitionData.taskCount + partitionData2.taskCount
 			}
 		}
 	}

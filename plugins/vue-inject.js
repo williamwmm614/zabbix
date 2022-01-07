@@ -17,6 +17,9 @@ Vue.prototype.$apis = {
 	host: '/api/zabbix/histories',
 	track: '/api/udp/vmcs/xyz',
 	trackTest: '/api/udp/vmcs/xyz/generate',
+	
+	vmc: '/api/udp/vmcs',
+	rtu: '/api/udp/rtus',
 	xcjGzmn: '/api/udp/hostInstruct?host=RTU-1',
 	fqjGzmn: '/api/udp/partitionInstruct?host=RTU-1&partition=2',
 	computerGzmn: '/api/udp/taskInstruct?host=RTU-1&partition=2&task=3',

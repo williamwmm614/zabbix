@@ -13,24 +13,24 @@
 				<div class="row">
 					<article
 						v-for="(item, index) in rcglImgsData.vmc1HostList"
-						:key="item"
+						:key="item.host"
 						@click="handleModuleClick(index + 1, item)">
 						<img v-if="activatedModuleIndex === index + 1" :src="rcglImgsData.hostActiveImg" class="active-img">
 						<img v-else :src="rcglImgsData.vmcFaultImg">
 						<div class="name" :class="activatedModuleIndex === index + 1 ? 'name-active' : ''">
-							<span>{{ $replaceStr(item, '计算机') }} 故障</span>
+							<span>{{ $replaceStr(item.host, '计算机') }} 故障</span>
 						</div>
 					</article>
 				</div>
 				<div class="row">
 					<article
 						v-for="(item, index) in rcglImgsData.vmc2HostList"
-						:key="item"
+						:key="item.host"
 						@click="handleModuleClick(index + 4, item)">
 						<img v-if="activatedModuleIndex === index + 4" :src="rcglImgsData.hostActiveImg" class="active-img">
 						<img v-else :src="rcglImgsData.vmcFaultImg">
 						<div class="name" :class="activatedModuleIndex === index + 4 ? 'name-active' : ''">
-							<span>{{ $replaceStr(item, '计算机') }} 故障</span>
+							<span>{{ $replaceStr(item.host, '计算机') }} 故障</span>
 						</div>
 					</article>
 				</div>
@@ -40,23 +40,24 @@
 				<div class="row">
 					<article
 						v-for="(item, index) in rcglImgsData.rtuHostList"
-						:key="item"
+						:key="item.host"
 						@click="handleModuleClick(index + 7, item)">
 						
-						<img v-if="activatedModuleIndex === index + 7" :src="rcglImgsData.pduActiveImg" class="active-img">
-						<img v-else :src="pduImgUrl">
-						<div class="name" :class="activatedModuleIndex === index + 7 ? 'name-active' : ''"><span>{{ item }} 故障</span></div>
+						<!-- <img v-if="activatedModuleIndex === index + 7" :src="rcglImgsData.pduActiveImg" class="active-img">
+						<img v-else :src="pduImgUrl"> -->
+						<img :src="rcglImgsData.pduDoneImgUrl">
+						<div class="name" :class="activatedModuleIndex === index + 7 ? 'name-active' : ''"><span>{{ item.host }} 故障</span></div>
 					</article>
 				</div>
 				
 				<div class="row">
 					<article
 						v-for="(item, index) in rcglImgsData.rtuHostList2"
-						:key="item">
+						:key="item.host">
 						
 						<!-- <img v-if="activatedModuleIndex === index + 9" :src="rcglImgsData.pduActiveImg" class="active-img"> -->
 						<img :src="rcglImgsData.pduDoneImgUrl">
-						<div class="name"><span>{{ item }} 故障</span></div>
+						<div class="name"><span>{{ item.host }} 故障</span></div>
 					</article>
 				</div>
 			</div>
@@ -96,7 +97,7 @@
 			// 交互体验区模块点击事件
 			async handleModuleClick(index, item) {
 				this.activatedModuleIndex = index
-				if (item) await this.$axios.get(`${this.$apis.hostMerge}?host=${item}`)
+				if (item) await this.$axios.get(`/api/udp/vmcs/${item.hostId}/hostMerge?host=${item.host}`)
 			},
 			
 			initData() {
@@ -105,9 +106,9 @@
 				const {vmc1, vmc2} = vmcData
 				const {pduData} = localHostData
 				const {pdu1, pdu2} = pduData
-				this.rcglImgsData.vmc1HostList = [vmc1.hostA.host, vmc1.hostB.host, vmc1.hostC.host]
-				this.rcglImgsData.vmc2HostList = [vmc2.hostA.host, vmc2.hostB.host, vmc2.hostC.host]
-				this.rcglImgsData.rtuHostList = [pdu1.host, pdu2.host]
+				this.rcglImgsData.vmc1HostList = [vmc1.hostA, vmc1.hostB, vmc1.hostC]
+				this.rcglImgsData.vmc2HostList = [vmc2.hostA, vmc2.hostB, vmc2.hostC]
+				this.rcglImgsData.rtuHostList = [pdu1, pdu2]
 			}
 		}
 	}
