@@ -9,19 +9,27 @@
 
 		<!-- 故障分层 -->
 		<section v-if="INTERACTION_PARENT_MODULE_NAME !== 'GZFC_CHILD'" class="action-section">
-			<article @click="handleModuleClick(1, 'GZFC_CHILD')">
-				<RotateImg v-if="activatedModuleIndex === 1" :initIcon="gzfcImgs.initIcon_thread"></RotateImg>
-				<div v-else class="img-wrap">
+			<article @click="handleModuleClick(1)">
+				<div class="img-wrap">
 					<img :src="gzfcImgs.xcjImg">
 				</div>
-				<div class="name" :class="activatedModuleIndex === 1 ? 'name-active' : ''"><span>线程级故障模拟</span></div>
+				<div class="name"><span>线程级故障模拟</span></div>
+				<!-- <RotateImg v-if="activatedModuleIndex === 1" :initIcon="gzfcImgs.initIcon_thread"></RotateImg>
+				<div v-else class="img-wrap">
+					<img :src="gzfcImgs.xcjImg">
+				</div> -->
+				<!-- <div class="name" :class="activatedModuleIndex === 1 ? 'name-active' : ''"><span>线程级故障模拟</span></div> -->
 			</article>
 			<article @click="handleModuleClick(2)">
-				<RotateImg v-if="activatedModuleIndex === 2" :initIcon="gzfcImgs.initIcon_fenquji"></RotateImg>
-				<div v-else class="img-wrap">
+				<div class="img-wrap">
 					<img :src="gzfcImgs.fqjImg">
 				</div>
-				<div class="name" :class="activatedModuleIndex === 2 ? 'name-active' : ''"><span>分区级故障模拟</span></div>
+				<div class="name"><span>分区级故障模拟</span></div>
+				<!-- <RotateImg v-if="activatedModuleIndex === 2" :initIcon="gzfcImgs.initIcon_fenquji"></RotateImg>
+				<div v-else class="img-wrap">
+					<img :src="gzfcImgs.fqjImg">
+				</div> -->
+				<!-- <div class="name" :class="activatedModuleIndex === 2 ? 'name-active' : ''"><span>分区级故障模拟</span></div> -->
 			</article>
 			<article @click="handleModuleClick(3)">
 				<RotateImg v-if="activatedModuleIndex === 3" :initIcon="gzfcImgs.initIcon_computer"></RotateImg>
@@ -114,12 +122,10 @@
 				this.activatedModuleIndex = index
 				
 				// 故障分层下级不需要跳转页面
-				// if (type === 'GZFC_CHILD') {
-				// 	this.set_interaction_parent_module_name(type)
-				// 	await this.$axios.get(this.$apis.xcjGzmn)
-				// 	return
-				// }
-				if (index === 1) await this.$axios.get(`/api/udp/vmcs/${16}/hostInstruct?host=RTU-1`) 
+				if (index === 1) {
+					this.set_interaction_parent_module_name('GZFC_CHILD')
+					await this.$axios.get(`/api/udp/vmcs/${16}/hostInstruct?host=RTU-1`)
+				}
 				if (index === 2) await this.$axios.get(`/api/udp/vmcs/${17}/partitionInstruct?host=RTU-1&partition=2`)
 				if (index === 3) await this.$axios.get(`/api/udp/vmcs/${18}/taskInstruct?host=RTU-1&partition=2&task=3`)
 			}

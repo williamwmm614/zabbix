@@ -76,7 +76,6 @@
 				immediate: true,
 				handler(id) {
 					if (id) {
-						console.log(`当前主机ID：${id}`);
 						this.clearVmcInterval()
 						this.showVmcTaskListComponent = false
 						this.showPduTaskListComponent = false
@@ -84,55 +83,15 @@
 							this.getPduPartitionData(id)
 							this.showPduTaskListComponent = true
 						} else {
-							// this.getVmcPartitionData(id)
-							
 							this.repeatGetVmcData(id)
 							this.showVmcTaskListComponent = true
-							// setTimeout(() => {
-							// 	this.repeatGetVmcData(id)
-							// }, 1000)
 						}
-						// if (index >= 7 && index <= 10) {
-						// 	this.showPduTaskListComponent = true
-						// } else {
-						// 	this.showVmcTaskListComponent = true
-						// 	setTimeout(() => {
-						// 		// this.repeatGetVmcData(this.CUR_VMC_ID)
-						// 	}, 1000)
-						// }
 					} 
-				}
-			},
-			
-			HOST_ACTIVATED: {
-				immediate: true,
-				handler(index) {
-					// if (index) {
-					// 	console.log(`当前主机下标：${index}`);
-					// 	this.clearVmcInterval()
-					// 	this.showVmcTaskListComponent = false
-					// 	this.showPduTaskListComponent = false
-					// 	if (val === 48 || val === 49) {
-					// 		this.getPduPartitionData()
-					// 	} else {
-					// 		this.getVmcPartitionData()
-					// 	}
-					// 	if (index >= 7 && index <= 10) {
-					// 		this.showPduTaskListComponent = true
-					// 	} else {
-					// 		this.showVmcTaskListComponent = true
-					// 		setTimeout(() => {
-					// 			// this.repeatGetVmcData(this.CUR_VMC_ID)
-					// 		}, 1000)
-					// 	}
-					// } 
 				}
 			}
 		},
 
 		mounted() {
-			// this.getVmcPartitionData(241)
-			// this.getPduPartitionData()
 		},
 
 		methods: {
@@ -164,14 +123,7 @@
 					data: partitionData
 				} = await this.$axios.get(`${this.$apis.vmc}/${hostId}`)
 				this.partitionData = partitionData
-				console.log(partitionData);
 				this.vmcTaskList = this.partitionData.partitions
-				
-				// const {partitionCount, taskCount} = partitionData 
-				// this.set_vmc_task_count(taskCount)
-				// this.set_vmc_partition_count(partitionCount)
-				// this.$storage.setVmcPartition(partitionCount)
-				// this.$storage.setVmcTask(taskCount)
 				this.showTaskList = true
 			},
 	

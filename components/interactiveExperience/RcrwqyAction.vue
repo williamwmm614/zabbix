@@ -15,14 +15,15 @@
 					<img :src="moduleImg">
 				</div>
 				
-				<div class="name" :class="activatedModuleIndex === 1 ? 'name-active' : ''"><span>计算机1断电故障模拟</span></div>
+				<!-- <div class="name" :class="activatedModuleIndex === 1 ? 'name-active' : ''"><span>计算机1断电故障模拟</span></div> -->
+				<div class="name" :class="activatedModuleIndex === 1 ? 'name-active' : ''"><span>VMC1 任务迁移</span></div>
 			</article>
 			<article @click="handleModuleClick(2)">
 				<RotateImg v-if="activatedModuleIndex === 2" :initIcon="initIcon"></RotateImg>
 				<div v-else class="img-wrap">
 					<img :src="moduleImg">
 				</div>
-				<div class="name" :class="activatedModuleIndex === 2 ? 'name-active' : ''"><span>计算机2断电故障模拟</span></div>
+				<div class="name" :class="activatedModuleIndex === 2 ? 'name-active' : ''"><span>VMC2 任务迁移</span></div>
 			</article>
 		</section>
 	</div>
