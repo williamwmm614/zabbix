@@ -8,7 +8,7 @@
 		</section>
 
 		<!-- 故障分层 -->
-		<section v-if="INTERACTION_PARENT_MODULE_NAME !== 'GZFC_CHILD'" class="action-section">
+		<section v-if="INTERACTION_PARENT_MODULE_NAME !== 'GZFC_CHILD' && INTERACTION_PARENT_MODULE_NAME !== 'FQJGZMN_CHILD'" class="action-section">
 			<article @click="handleModuleClick(1)">
 				<div class="img-wrap">
 					<img :src="gzfcImgs.xcjImg">
@@ -42,37 +42,78 @@
 
 		<!-- 故障分层下级模块 -->
 		<section v-else class="action-section">
-			<article @click="handleModuleClick(4)">
-				<!-- <img :src="gzfcImgs.yxcsImg"> -->
-				<RotateImg v-if="activatedModuleIndex === 4" :initIcon="gzfcImgs.initIcon_yunxingchaoshi"></RotateImg>
-				<div v-else class="img-wrap">
+			<!-- 运行超时 -->
+			<article @click="handleChildModuleClick(1)">
+				<div v-if="activatedChildModuleIndex !== 1 || (activatedChildModuleIndex === 1 && !childBtnToogle[1])" class="img-wrap">
 					<img :src="gzfcImgs.yxcsImg">
 				</div>
-				<div class="name" :class="activatedModuleIndex === 4 ? 'name-active' : ''"><span>运行超时</span></div>
+				
+				<RotateImg
+					v-if="activatedChildModuleIndex === 1 && childBtnToogle[1]"
+					:type="activatedModuleIndex === 1 ? 'GZFC_CHILD' : 'FQJGZMN_CHILD'"
+					:initIcon="activatedModuleIndex === 1 ? gzfcImgs.initIcon_yunxingchaoshi : gzfcImgs.initIcon_yunxingchaoshi_red"
+				></RotateImg>
+
+				<div
+					class="name"
+					:class="activatedChildModuleIndex === 1 && childBtnToogle[1] ? activatedModuleIndex === 1 ? 'name-active' : 'name-active2' : ''">
+					<span>运行超时</span>
+				</div>
 			</article>
-			<article @click="handleModuleClick(5)">
-				<!-- <img :src="gzfcImgs.fdjscwImg"> -->
-				<RotateImg v-if="activatedModuleIndex === 5" :initIcon="gzfcImgs.initIcon_fudianjisuancuowu"></RotateImg>
-				<div v-else class="img-wrap">
+			
+			<!-- 浮点计算错误 -->
+			<article @click="handleChildModuleClick(2)">
+				<div v-if="activatedChildModuleIndex !== 2 || (activatedChildModuleIndex === 2 && !childBtnToogle[2])" class="img-wrap">
 					<img :src="gzfcImgs.fdjscwImg">
 				</div>
-				<div class="name" :class="activatedModuleIndex === 5 ? 'name-active' : ''"><span>浮点计算错误</span></div>
+				
+				<RotateImg
+					v-if="activatedChildModuleIndex === 2 && childBtnToogle[2]"
+					:type="activatedModuleIndex === 1 ? 'GZFC_CHILD' : 'FQJGZMN_CHILD'"
+					:initIcon="activatedModuleIndex === 1 ? gzfcImgs.initIcon_fudianjisuancuowu : gzfcImgs.initIcon_fudianjisuancuowu_red"
+				></RotateImg>
+				
+				<div
+					class="name"
+					:class="activatedChildModuleIndex === 2 && childBtnToogle[2] ? activatedModuleIndex === 1 ? 'name-active' : 'name-active2' : ''">
+					<span>浮点计算错误</span>
+				</div>
 			</article>
-			<article @click="handleModuleClick(6)">
+			
+			<!-- 访问非法地址 -->
+			<article @click="handleChildModuleClick(3)">
 				<!-- <img :src="gzfcImgs.fwffdzImg"> -->
-				<RotateImg v-if="activatedModuleIndex === 6" :initIcon="gzfcImgs.initIcon_fangwenfeifadizhi"></RotateImg>
+				<RotateImg
+					v-if="activatedChildModuleIndex === 3"
+					:type="activatedModuleIndex === 1 ? 'GZFC_CHILD' : 'FQJGZMN_CHILD'"
+					:initIcon="activatedModuleIndex === 1 ? gzfcImgs.initIcon_fangwenfeifadizhi : gzfcImgs.initIcon_fangwenfeifadizhi_red"
+				></RotateImg>
 				<div v-else class="img-wrap">
 					<img :src="gzfcImgs.fwffdzImg">
 				</div>
-				<div class="name" :class="activatedModuleIndex === 6 ? 'name-active' : ''"><span>访问非法地址</span></div>
+				<div
+					class="name"
+					:class="activatedChildModuleIndex === 3 ? activatedModuleIndex === 1 ? 'name-active' : 'name-active2' : ''">
+					<span>访问非法地址</span>
+				</div>
 			</article>
-			<article @click="handleModuleClick(7)">
+			
+			<!-- 数据溢出 -->
+			<article @click="handleChildModuleClick(4)">
 				<!-- <img :src="gzfcImgs.sjycImg"> -->
-				<RotateImg v-if="activatedModuleIndex === 7" :initIcon="gzfcImgs.initIcon_shujuyichu"></RotateImg>
+				<RotateImg
+					v-if="activatedChildModuleIndex === 4"
+					:type="activatedModuleIndex === 1 ? 'GZFC_CHILD' : 'FQJGZMN_CHILD'"
+					:initIcon="activatedModuleIndex === 1 ? gzfcImgs.initIcon_shujuyichu : gzfcImgs.initIcon_shujuyichu_red"
+				></RotateImg>
 				<div v-else class="img-wrap">
 					<img :src="gzfcImgs.sjycImg">
 				</div>
-				<div class="name" :class="activatedModuleIndex === 7 ? 'name-active' : ''"><span>数据溢出</span></div>
+				<div
+					class="name"
+					:class="activatedChildModuleIndex === 4 ? activatedModuleIndex === 1 ? 'name-active' : 'name-active2' : ''">
+					<span>数据溢出</span>
+				</div>
 			</article>
 		</section>
 	</div>
@@ -89,6 +130,15 @@
 			return {
 				titleIcon: require('@/assets/images/title/title-icon.png'),
 				activatedModuleIndex: 0,
+				activatedChildModuleIndex: 0,
+				sendTimer: null,
+				childBtnToogle: {
+					1: false,
+					2: false,
+					3: false,
+					4: false,
+				},
+				oldBtnIndex: 0,
 				// 故障分层图片
 				gzfcImgs: {
 					xcjImg: require('@/assets/images/interactiveExperience/gzfc/thread-default.png'),
@@ -101,10 +151,16 @@
 					initIcon_thread: require('@/assets/images/interactiveExperience/activeImgs/gzfc/thread.png'),
 					initIcon_fenquji: require('@/assets/images/interactiveExperience/activeImgs/gzfc/fenquji.png'),
 					initIcon_computer: require('@/assets/images/interactiveExperience/activeImgs/gzfc/computer.png'),
+					
 					initIcon_fangwenfeifadizhi: require('@/assets/images/interactiveExperience/activeImgs/gzfc/child/fangwenfeifadizhi.png'),
 					initIcon_fudianjisuancuowu: require('@/assets/images/interactiveExperience/activeImgs/gzfc/child/fudianjisuancuowu.png'),
 					initIcon_shujuyichu: require('@/assets/images/interactiveExperience/activeImgs/gzfc/child/shujuyichu.png'),
 					initIcon_yunxingchaoshi: require('@/assets/images/interactiveExperience/activeImgs/gzfc/child/yunxingchaoshi.png'),
+					
+					initIcon_fangwenfeifadizhi_red: require('@/assets/images/interactiveExperience/activeImgs/gzfc/child/fangwenfeifadizhi_red.png'),
+					initIcon_fudianjisuancuowu_red: require('@/assets/images/interactiveExperience/activeImgs/gzfc/child/fudianjisuancuowu_red.png'),
+					initIcon_shujuyichu_red: require('@/assets/images/interactiveExperience/activeImgs/gzfc/child/shujuyichu_red.png'),
+					initIcon_yunxingchaoshi_red: require('@/assets/images/interactiveExperience/activeImgs/gzfc/child/yunxingchaoshi_red.png'),
 				},
 			}
 		},
@@ -112,22 +168,150 @@
 		computed: {
 			...mapGetters(['INTERACTION_PARENT_MODULE_NAME'])
 		},
+		
+		watch: {
+			INTERACTION_PARENT_MODULE_NAME(val) {
+				if (val === 'GZFC') this.clearSendInterval()
+			}
+		},
 
 		methods: {
 			...mapMutations(['set_interaction_parent_module_name']),
 
 			// 交互体验区模块点击事件
 			async handleModuleClick(index, type) {
-				const _this = this
-				this.activatedModuleIndex = index
+				this.activatedChildModuleIndex = 0
+				const localHostData = this.$storage.getEmulatedData()
+				if (localHostData === undefined) {
+					this.$message({
+						message: '请选择主机或任务，否则无法进行数据模拟！',
+						type: 'warning'
+					})
+					return
+				}
 				
+				this.activatedModuleIndex = index
 				// 故障分层下级不需要跳转页面
 				if (index === 1) {
+					if (localHostData.taskIndex === undefined) {
+						this.$message({
+							message: '请选择一个任务！',
+							type: 'warning'
+						})
+						return
+					}
+					
+					if (localHostData.hostId === undefined) {
+						this.$message({
+							message: '请选择一台主机！',
+							type: 'warning'
+						})
+						return
+					}
 					this.set_interaction_parent_module_name('GZFC_CHILD')
-					await this.$axios.get(`/api/udp/vmcs/${16}/hostInstruct?host=RTU-1`)
+					// await this.$axios.get(`/api/udp/vmcs/${16}/hostInstruct?host=RTU-1`)
 				}
-				if (index === 2) await this.$axios.get(`/api/udp/vmcs/${17}/partitionInstruct?host=RTU-1&partition=2`)
-				if (index === 3) await this.$axios.get(`/api/udp/vmcs/${18}/taskInstruct?host=RTU-1&partition=2&task=3`)
+				
+				if (index === 2) {
+					if (localHostData.taskIndex === undefined) {
+						this.$message({
+							message: '请选择一个任务！',
+							type: 'warning'
+						})
+						return
+					}
+					
+					if (localHostData.hostId === undefined) {
+						this.$message({
+							message: '请选择一台主机！',
+							type: 'warning'
+						})
+						return
+					}
+					this.set_interaction_parent_module_name('FQJGZMN_CHILD')
+					// await this.$axios.get(`/api/udp/vmcs/${17}/partitionInstruct?host=RTU-1&partition=2`)
+				}
+				
+				// 单机故障模拟 计算机级故障模拟 需要选择主机，否则无法进行数据模拟
+				if (index === 3) {
+					if (localHostData.hostId === undefined) {
+						this.$message({
+							message: '请选择一台主机！',
+							type: 'warning'
+						})
+						return
+					}
+					await this.$axios.get(`/api/udp/vmcs/${localHostData.hostId}/hostInstruct`)
+					this.$message({
+						message: `${localHostData.host}故障模拟成功！`,
+						type: 'success'
+					})
+				}
+			},
+			
+			clearSendInterval() {
+				clearInterval(this.sendTimer)
+				this.sendTimer = null
+			},
+			
+			// 分区级下级按钮点击样式设置
+			setBtnToogle(index) {
+				// 进页面第一次点击
+				if (this.oldBtnIndex === 0) {
+					this.oldBtnIndex = index
+					this.childBtnToogle[index] = true
+				} else {
+					// 将上一次激活的按钮恢复原状态
+					if (index === this.oldBtnIndex) {
+						// 如果一直点击是按钮自身，将自身状态取反即可
+						this.childBtnToogle[index] = !this.childBtnToogle[index]
+					} else {
+						// 如果激活其他按钮，则点击其他按钮时将上次激活的按钮状态还原，然后再将点击的按钮状态设置为true
+						this.childBtnToogle[this.oldBtnIndex] = false
+						this.childBtnToogle[index] = true
+					}
+					this.oldBtnIndex = index
+				}
+			},
+			
+			// 点击下级交互模块
+			async handleChildModuleClick(index) {
+				const _this = this
+				this.activatedChildModuleIndex = index
+				this.setBtnToogle(index)
+				
+				const localHostData = this.$storage.getEmulatedData()
+				const {hostId, areaIndex, taskIndex} = localHostData
+				let params = `partition=${areaIndex}&task=${taskIndex}&errorType=${index}`
+				
+				// 线程级故障模拟按钮点击进来后的逻辑
+				if (this.activatedModuleIndex === 1) {
+					await this.$axios.get(`/api/udp/vmcs/${hostId}/taskInstruct?${params}`)
+					this.$message({
+						message: '线程级故障模拟成功！',
+						type: 'success'
+					})
+				}
+				
+				// 分区级故障模拟点击后的逻辑
+				if (this.activatedModuleIndex === 2) {
+					if (!this.childBtnToogle[index]) {
+						this.clearSendInterval()
+						return
+					}
+					this.clearSendInterval()
+					this.sendTimer = setInterval(this.sendFqData, 1000)
+					this.$once('hook:beforeDestroy', () => {
+						_this.clearSendInterval()
+					})
+				}
+			},
+			
+			async sendFqData() {
+				const localHostData = this.$storage.getEmulatedData()
+				const {hostId, areaIndex, taskIndex} = localHostData
+				let params = `partition=${areaIndex}&task=${taskIndex}&errorType=${this.activatedChildModuleIndex}`
+				await this.$axios.get(`/api/udp/vmcs/${hostId}/partitionInstruct?${params}`)
 			}
 		}
 	}
@@ -200,6 +384,17 @@
 					
 						span {
 							background: linear-gradient(-2deg, #E6842E 0%, #FFFFFF 100%);
+							-webkit-background-clip: text;
+							-webkit-text-fill-color: transparent;
+						}
+					}
+					
+					&-active2 {
+						background: url('@/assets/images/interaction/active_red.png') no-repeat;
+						background-size: 100% 100%;
+					
+						span {
+							background: linear-gradient(-2deg, #e63232 0%, #FFFFFF 100%);
 							-webkit-background-clip: text;
 							-webkit-text-fill-color: transparent;
 						}

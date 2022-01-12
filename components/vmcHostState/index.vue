@@ -11,18 +11,19 @@
 			<div class="top">
 				<!-- 运行状态 -->
 				<vmc-run-state
-					:vmc1Name="vmc1Data.alias"
-					:vmc2Name="vmc2Data.alias">
+					:vmc1Name="vmc1Data.name"
+					:vmc2Name="vmc2Data.name"
+					@emitHostClick="handleEmitHostClick">
 				</vmc-run-state>
 			</div>
 
 			<div class="bottom">
 				<div class="area-task-row vmc1-task-row">
-					<task :taskList="vmc1Data.taskList"></task>
+					<task :taskList="vmc1Data.taskList" action="CLICK" @emitTaskClick="handleEmitTaskClick"></task>
 				</div>
 
 				<div class="area-task-row vmc2-task-row">
-					<task :taskList="vmc2Data.taskList"></task>
+					<task :taskList="vmc2Data.taskList" action="CLICK" @emitTaskClick="handleEmitTaskClick"></task>
 				</div>
 			</div>
 		</div>
@@ -62,7 +63,8 @@
 					hostList: [],
 					taskList: []
 				},
-				showSection: false
+				showSection: false,
+				emulatedData: {}
 			}
 		},
 		
@@ -89,11 +91,9 @@
 				const {vmc1, vmc2} = vmcData
 				this.vmc1Data.id = vmc1.id
 				this.vmc1Data.name = vmc1.name
-				this.vmc1Data.alias = this.$replaceStr(vmc1.name, '计算机')
 				this.vmc1Data.hostList = [vmc1.hostA, vmc1.hostB, vmc1.hostC]
 				this.vmc2Data.id = vmc2.id
 				this.vmc2Data.name = vmc2.name
-				this.vmc2Data.alias = this.$replaceStr(vmc2.name, '计算机')
 				this.vmc2Data.hostList = [vmc2.hostA, vmc2.hostB, vmc2.hostC]
 				this.getVmcPartitionData(16)
 				// this.getVmcPartitionData(this.vmc2Data.id, 'VMC2')
@@ -111,6 +111,18 @@
 				this.vmc1Data.taskList = listData
 				this.vmc2Data.taskList = listData
 			},
+			
+			// 监听主机点击事件
+			handleEmitHostClick(data) {
+				this.emulatedData = Object.assign(this.emulatedData, data)
+				this.$storage.setEmulatedData(this.emulatedData)
+			},
+			
+			// 监听任务点击事件
+			handleEmitTaskClick(data) {
+				this.emulatedData = Object.assign(this.emulatedData, data)
+				this.$storage.setEmulatedData(this.emulatedData)
+			}
 		}
 	}
 </script>

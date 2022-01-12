@@ -7,9 +7,10 @@
 				<div class="host-wrapper">
 					<div
 						class="host"
-						:class="hostActiveIndex === index + 1 ? 'host-activated' : ''"
 						v-for="(host, index) in vmc1HostList"
-						:key="host.host">
+						:key="host.host"
+						:class="{'host-activated': hostActiveIndex === index + 1}"
+						@click="handleHostClick(index + 1, host)">
 						<img :src="hostRunImg">
 						<!-- <img v-if="host.available === 1" :src="hostRunImg">
 						<img v-else :src="hostDoneImg"> -->
@@ -26,9 +27,10 @@
 				<div class="host-wrapper">
 					<div
 						class="host"
-						:class="hostActiveIndex === index + 4 ? 'host-activated' : ''"
 						v-for="(host, index) in vmc2HostList"
-						:key="host.host">
+						:key="host.host"
+						:class="{'host-activated': hostActiveIndex === index + 4}"
+						@click="handleHostClick(index + 4, host)">
 						<img :src="hostRunImg">
 						<!-- <img v-else :src="hostDoneImg"> -->
 						<!-- <img v-if="host.available === 1" :src="hostRunImg">
@@ -42,7 +44,10 @@
 </template>
 
 <script>
-	import {mapMutations} from 'vuex'
+	import {
+		mapMutations,
+		mapGetters
+	} from 'vuex'
 	export default {
 		name: 'VmcHostRunState',
 
@@ -62,13 +67,17 @@
 			return {
 				hostRunImg: require('@/assets/images/hostState/host-run.png'),
 				hostDoneImg: require('@/assets/images/hostState/host-done.png'),
-				hostActiveIndex: 1,
+				hostActiveIndex: 0,
 				hostTimer: null,
 				localHostData: {},
 				localCurHostId: 0,
 				vmc1HostList: [],
 				vmc2HostList: []
 			}
+		},
+		
+		computed: {
+			...mapGetters(['INTERACTION_PARENT_MODULE_NAME'])
 		},
 		
 		mounted() {
@@ -81,9 +90,7 @@
 			this.vmc1HostList = [vmc1.hostA, vmc1.hostB, vmc1.hostC]
 			this.vmc2HostList = [vmc2.hostA, vmc2.hostB, vmc2.hostC]
 			
-			setTimeout(() => {
-				this.repeatHost('FIRST')
-			}, 500)
+			// this.repeatHost('FIRST')
 		},
 
 		methods: {
@@ -91,6 +98,14 @@
 				'set_cur_host_id',
 				'set_host_activated'
 			]),
+			
+			// 主机点击事件
+			handleHostClick(index, host) {
+				if (this.INTERACTION_PARENT_MODULE_NAME === 'RCRWQY') return
+				if (index === this.hostActiveIndex) return
+				this.hostActiveIndex = index
+				this.$emit('emitHostClick', host)
+			},
 			
 			// 存储轮询主机ID
 			async setHostIdVuex(hostIndex) {
@@ -115,7 +130,7 @@
 					6: vmc2.hostC,
 				}
 				
-				this.set_host_activated(hostIndex)
+				// this.set_host_activated(hostIndex)
 				this.set_cur_host_id(hostIdJson[hostIndex])
 				this.$storage.setCurHostData(hostDataJson[hostIndex])
 			},
@@ -133,9 +148,10 @@
 					const hostListAll = vmc1HostList.concat(vmc2HostList)
 					let existIndex = hostListAll.findIndex(e => e.hostId === this.localCurHostId)
 					this.hostActiveIndex = existIndex !== -1 ? existIndex + 1 : 1
-				} else {
-					this.hostActiveIndex = 1
 				}
+				// else {
+				// 	this.hostActiveIndex = 1
+				// }
 				
 				this.setHostIdVuex(this.hostActiveIndex)
 			},
@@ -144,10 +160,12 @@
 				const _this = this
 				this.setFirstData(type)
 				
-				this.hostTimer = setInterval(this.handleHost, 10 * 1000)
-				this.$once('hook:beforeDestroy', () => {
-					_this.clearHostIntervalTask()
-				})
+				// this.hostTimer = setInterval(this.handleHost, 10 * 1000)
+				// this.$once('hook:beforeDestroy', () => {
+				// 	_this.clearHostIntervalTask()
+				// })
+				
+				// this.handleHost()
 			},
 			
 			handleHost() {
@@ -208,6 +226,7 @@
 
 				.host {
 					text-align: center;
+					cursor: pointer;
 
 					p {
 						color: $main-text-color;
@@ -228,7 +247,7 @@
 							
 							background-size: 2px 12px, 2px 12px, 12px 2px, 12px 2px;
 							background-position:  0, 100% 0, 0 0, 0 100%;
-							animation: lineScroll 1s infinite linear;
+							// animation: lineScroll 1s infinite linear;
 						}
 					}
 					

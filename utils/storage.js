@@ -5,6 +5,7 @@ const dataKey = 'VMC_PDU_DATA'
 const curHostIdKey = 'CUR_HOST_ID'
 const vmcPartitionKey = 'VMC_PARTITION_AMOUNT'
 const vmcTaskKey = 'VMC_TASK_AMOUNT'
+const emulatedDataKey = 'be_emulated_data' // 被模拟的数据 包括：主机ID，分区下标，任务下标
 
 export default {
 	// 清除全部缓存数据
@@ -34,4 +35,9 @@ export default {
 	getVmcPartition: data => _storage.get(vmcPartitionKey),
 	setVmcTask: data => _storage.set(vmcTaskKey, data),
 	getVmcTask: data => _storage.get(vmcTaskKey),
+	
+	// 存储需被模拟的主机数据
+	setEmulatedData: data => _storage.set(emulatedDataKey, data),
+	getEmulatedData: _ => _storage.get(emulatedDataKey),
+	removeEmulatedData: _ => _storage.remove(emulatedDataKey)
 }

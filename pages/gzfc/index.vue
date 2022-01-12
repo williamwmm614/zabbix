@@ -31,7 +31,6 @@
 		mapMutations,
 		mapGetters
 	} from 'vuex'
-	import RcrwqyAction from '@/components/interactiveExperience/RcrwqyAction.vue'
 	import GzfcAction from '@/components/interactiveExperience/GzfcAction.vue'
 	import DataMonitoring from '@/components/DataMonitoring.vue'
 	import VmcHostRunState from '@/components/vmcHostState/index.vue'
@@ -60,6 +59,7 @@
 		},
 
 		mounted() {
+			this.$storage.removeEmulatedData()
 			this.localHostData = this.$storage.getVmcPduData()
 		},
 
@@ -80,7 +80,7 @@
 					this.$router.go(-1)
 				}
 				// 故障分层返回逻辑
-				if (this.INTERACTION_PARENT_MODULE_NAME === 'GZFC_CHILD') {
+				if (this.INTERACTION_PARENT_MODULE_NAME === 'GZFC_CHILD' || this.INTERACTION_PARENT_MODULE_NAME === 'FQJGZMN_CHILD') {
 					this.set_interaction_parent_module_name('GZFC')
 				}
 			}

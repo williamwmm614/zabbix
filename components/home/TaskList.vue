@@ -142,20 +142,6 @@
 				clearInterval(this.areaTimer)
 				this.areaTimer = null
 				this.areaActiveIndex = 1
-			},
-
-			// 暂不使用
-			repeatArea() {
-				const len = this.taskList.length
-				const _this = this
-				let seconds = 30 / len * 1000
-				this.areaTimer = setInterval(() => {
-					if (_this.areaActiveIndex === len) {
-						_this.clearAreaInterval()
-						return
-					}
-					_this.areaActiveIndex++
-				}, seconds)
 			}
 		}
 	}

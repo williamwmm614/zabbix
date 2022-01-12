@@ -196,14 +196,22 @@
 		},
 
 		watch: {
-			CUR_HOST_ID(id) {
-				if (id) {
+			CUR_HOST_ID: {
+				immediate: true,
+				handler(id) {
 					this.clearDataInterval()
-					this.curHostId = id
-					this.getAllHostData()
-					if (id !== 48 && id !== 49) this.repeatGetData()
+					if (id) {
+						this.curHostId = id
+						this.getAllHostData()
+						// 数据监控模块在 容错任务迁移和故障分层两个模块中不做轮询，佃获取点击进来时主机数据
+						if (this.INTERACTION_PARENT_MODULE_NAME === 'RCRWQY' || this.INTERACTION_PARENT_MODULE_NAME === 'GZFC') {
+							this.getHostInfo()
+						} else {
+							if (id !== 48 && id !== 49) this.repeatGetData()
+						}
+					}
 				}
-			},
+			}
 		},
 		
 		mounted() {
@@ -243,18 +251,10 @@
 			
 			repeatGetData() {
 				const _this = this
-				let module = this.INTERACTION_PARENT_MODULE_NAME !== 'RCRWQY' && this.INTERACTION_PARENT_MODULE_NAME !== 'GZFC'
-				if (module) {
-					this.dataTimer = setInterval(() => {
-						_this.getHostInfo()
-					}, 1000)
-					
-					this.$once('hook:beforeDestory', () => {
-						_this.clearDataInterval()
-					})
-				} else {
-					this.getHostInfo()
-				}
+				this.dataTimer = setInterval(this.getHostInfo, 1000)
+				this.$once('hook:beforeDestroy', () => {
+					_this.clearDataInterval()
+				})
 			},
 
 			async getAllHostData() {

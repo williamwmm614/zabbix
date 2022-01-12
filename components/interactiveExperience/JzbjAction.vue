@@ -97,7 +97,8 @@
 			// 交互体验区模块点击事件
 			async handleModuleClick(index, item) {
 				this.activatedModuleIndex = index
-				if (item) await this.$axios.get(`/api/udp/vmcs/${item.hostId}/hostMerge?host=${item.host}`)
+				if (item) await this.$axios.get(`/api/udp/vmcs/${item.hostId}/hostMerge`)
+				// if (item) await this.$axios.get(`/api/udp/vmcs/${item.hostId}/hostMerge?host=${item.host}`)
 			},
 			
 			initData() {

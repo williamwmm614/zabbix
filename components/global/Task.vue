@@ -1,13 +1,14 @@
 <template>
 	<section class="list-container">
-		<div class="task" v-for="item in taskList" :key="item.name">
+		<div class="task" v-for="(item, _index) in taskList" :key="item.name">
 			<div class="area-name">{{ item.name }}</div>
 			<div class="list">
 				<div
 					class="item"
-					v-for="task in item.tasks"
+					v-for="(task, index) in item.tasks"
 					:key="task.name"
-					:class="bindClass(task.state)">
+					:class="[bindClass(task.state), activeIndex === index + 1 && _index + 1 === areaIndex ? 'item-clicked' : '']"
+					@click="handleItemClick(_index + 1, index + 1)">
 					{{ task.name }}
 				</div>
 			</div>
@@ -16,6 +17,9 @@
 </template>
 
 <script>
+	import {
+		mapGetters
+	} from 'vuex'
 	export default {
 		name: 'Task',
 
@@ -23,14 +27,23 @@
 			taskList: {
 				type: Array,
 				default: () => []
+			},
+			
+			action: {
+				type: String,
+				default: ''
 			}
 		},
 
 		data() {
-			return {}
+			return {
+				activeIndex: 0,
+				areaIndex: 0
+			}
 		},
 
-		mounted() {
+		computed: {
+			...mapGetters(['INTERACTION_PARENT_MODULE_NAME'])
 		},
 
 		methods: {
@@ -40,6 +53,20 @@
 				if (state === 2) return 'item-blue' // 睡眠
 				if (state === 3) return 'item-yellow' // 阻塞
 				if (state === 255) return 'item-yellow' // 未创建
+			},
+			
+			// 任务点击事件
+			handleItemClick(areaIndex, taskIndex) {
+				if (this.INTERACTION_PARENT_MODULE_NAME === 'RCRWQY') return
+				if (this.action === 'CLICK') {
+					if (taskIndex === this.activeIndex && areaIndex === this.areaIndex) return
+					this.areaIndex = areaIndex // 分区下标 从1开始
+					this.activeIndex = taskIndex // 任务下标 从1开始
+					this.$emit('emitTaskClick', {
+						areaIndex,
+						taskIndex
+					})
+				}
 			}
 		}
 	}
@@ -83,11 +110,15 @@
 					width: 85%;
 					height: 15%;
 					margin: auto;
+					cursor: pointer;
 					color: #C9DBF5;
 					font-size: 15px;
 					font-weight: bolder;
 					@include flex-level-center;
-					transition: 1s ease-in-out;
+					
+					&-clicked{
+						transform: scale(1.1);
+					}
 
 					&-blue {
 						background: url(@/assets/images/task/blue.png) no-repeat;

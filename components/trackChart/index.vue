@@ -199,18 +199,6 @@
 		},
 
 		watch: {
-			HOST_ACTIVATED(val) {
-				// if (this.INTERACTION_PARENT_MODULE_NAME === 'RCGL' || this.INTERACTION_PARENT_MODULE_NAME === 'JZBJ') {
-				// 	const {
-				// 		vmc1,
-				// 		vmc2
-				// 	} = this.localVmcData
-				// 	if (val <= 3) this.vmcId = vmc1.id
-				// 	if (val > 3 && val <= 6) this.vmcId = vmc2.id
-				// 	this.getTrackData()
-				// }
-			},
-			
 			CUR_HOST_ID: {
 				immediate: true,
 				handler(id) {
@@ -218,7 +206,6 @@
 					if (id !== 0 && id !== 48 && id !== 49) {
 						setTimeout(() => {
 							if (this.INTERACTION_PARENT_MODULE_NAME === 'RCGL' || this.INTERACTION_PARENT_MODULE_NAME === 'JZBJ') {
-								console.log(id);
 								this.getTrackData(id)
 							}
 						}, 500)
@@ -261,7 +248,7 @@
 
 			// 获取轨道图数据
 			async getTrackData(id) {
-				console.log(id);
+				console.log('----获取轨道图数据 ID写死的 16-----');
 				this.getCurTime()
 				this.chartOption.series = [{
 						name: 'X坐标',
@@ -287,7 +274,6 @@
 					data: trackData
 				} = await this.$axios.get(`${this.$apis.vmc}/${id}`)
 				
-				console.log(trackData);
 				const {x, y, z, timestamp} = trackData
 				// let timestamps = trackData[0].xyzs.map(e => this.$dateFormat(e.timestamp).split(' ')[1])
 				// let xs = trackData[0].xyzs.map(e => e.x)

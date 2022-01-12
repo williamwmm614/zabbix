@@ -44,8 +44,6 @@
 				jzbjImg: require('@/assets/images/interaction/jizhongbingji.png'),
 				rcglImg: require('@/assets/images/interaction/rongcuoguanli.png'),
 				rcrwqyImg: require('@/assets/images/interaction/rongcuorenwuqianyi.png'),
-				vmcActive: require('@/assets/images/interactiveExperience/vmc-active.png'),
-				vmcDone: require('@/assets/images/interactiveExperience/vmc-done.png'),
 				pduImgUrl: require('@/assets/images/topology/pdu.png'),
 			}
 		},
@@ -65,27 +63,20 @@
 			// 交互体验区模块点击事件
 			handleModuleClick(type) {
 				const _this = this
-				
-				// 点击交互区域将 hostId 和 vmcId清除，便于返回首页后各模块监听并请求数据
 				this.set_cur_vmc_id(0)
-				this.set_cur_host_id(0)
+				// this.set_cur_host_id(0)
 				this.set_host_activated(0)
-				
-				// 故障分层下级不需要跳转页面
-				if (type === 'GZFC_CHILD') {
-					this.set_interaction_parent_module_name(type)
-					return
-				}
-
+				// 点击交互区域将 hostId 和 vmcId清除，便于返回首页后各模块监听并请求数据
 				let url = ''
 				if (type === 'RCRWQY') url = '/rcrwqy'
 				if (type === 'GZFC') url = '/gzfc'
 				if (type === 'RCGL') url = '/rcgl'
 				if (type === 'JZBJ') url = '/jzbj'
 				this.$router.push(url)
-				setTimeout(() => {
-					_this.set_interaction_parent_module_name(type)
-				}, 300)
+				this.set_interaction_parent_module_name(type)
+				// setTimeout(() => {
+				// 	_this.set_interaction_parent_module_name(type)
+				// }, 500)
 			}
 		}
 	}

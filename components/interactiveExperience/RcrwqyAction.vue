@@ -51,8 +51,16 @@
 		methods: {
 			...mapMutations('set_cur_host_id'),
 			
-			handleModuleClick(index) {
+			async handleModuleClick(index) {
 				this.activatedModuleIndex = index
+				let hostId = 0
+				if (index === 1) hostId = 16
+				if (index === 2) hostId = 32
+				await this.$axios.get(`/api/udp/vmcs/${hostId}/hostInstruct`)
+				this.$message({
+					message: '任务迁移模拟成功！',
+					type: 'success'
+				})
 			}
 		}
 	}

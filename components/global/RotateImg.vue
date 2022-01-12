@@ -1,6 +1,6 @@
 <template>
 	<div class="img-rotate-wrapper">
-		<img class="active-img" :src="activeImg">
+		<img class="active-img" :src="type === 'FQJGZMN_CHILD' ? activeRedImg : activeImg">
 		<img class="icon" :src="initIcon" >
 	</div>
 </template>
@@ -10,6 +10,10 @@
 		name: 'RotateImg',
 		
 		props: {
+			type: {
+				type: String,
+				default: ''
+			},
 			initIcon: {
 				type: String,
 				default: ''
@@ -19,6 +23,7 @@
 		data() {
 			return {
 				activeImg: require('@/assets/images/interactiveExperience/activeImgs/rcrwqy/duandianguzhangmoni.png'),
+				activeRedImg: require('@/assets/images/interactiveExperience/activeImgs/rcrwqy/duandianguzhangmoni_red.png'),
 			}
 		}
 	}
